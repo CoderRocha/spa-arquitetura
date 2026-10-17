@@ -1,11 +1,13 @@
-import type { ComponentProps } from 'react'
-import { cx } from '@ui/variants'
+import { cn } from "cn"
 
-export const Skeleton = ({ className, ...props }: ComponentProps<'div'>) => (
-  <div
-    data-slot="skeleton"
-    aria-hidden="true"
-    className={cx('animate-pulse rounded-control bg-surface-muted', className)}
-    {...props}
-  />
-)
+function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="skeleton"
+      className={cn("animate-pulse rounded-md bg-muted", className)}
+      {...props}
+    />
+  )
+}
+
+export { Skeleton }
