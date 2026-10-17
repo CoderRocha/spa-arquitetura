@@ -25,7 +25,7 @@ msgstr "The image must be 2 MB or smaller."
 msgid "A senha precisa ter pelo menos 8 caracteres."
 msgstr "Password must be at least 8 characters."
 
-#: src/pattern/cookie-consent-banner.tsx:34
+#: src/pattern/cookie-consent-banner.tsx:32
 msgid "Aceitar"
 msgstr "Accept"
 
@@ -42,9 +42,13 @@ msgid "Ainda não tem conta? <0>Criar conta</0>"
 msgstr "Don't have an account? <0>Create account</0>"
 
 #: src/core/http-resource.ts:56
-#: src/pattern/widget-boundary.tsx:19
+#: src/pattern/widget-boundary.tsx:24
 msgid "Algo deu errado"
 msgstr "Something went wrong"
+
+#: src/layouts/main-layout.tsx:69
+msgid "Alternar menu"
+msgstr "Toggle menu"
 
 #: src/features/profile/profile-form.tsx:42
 msgid "Aparece no seu perfil. Opcional."
@@ -66,7 +70,7 @@ msgstr "Active"
 msgid "Atualizado em"
 msgstr "Updated at"
 
-#: src/features/items/detail.tsx:45
+#: src/features/items/detail.tsx:52
 msgid "Atualizado em {updatedAt}"
 msgstr "Updated {updatedAt}"
 
@@ -78,15 +82,15 @@ msgstr "Welcome!"
 msgid "Busca, ordenação e paginação ficam na URL."
 msgstr "Search, sorting and pagination live in the URL."
 
-#: src/features/items/list.tsx:112
+#: src/features/items/list.tsx:111
 msgid "Buscar itens"
 msgstr "Search items"
 
-#: src/features/items/list.tsx:112
+#: src/features/items/list.tsx:111
 msgid "Buscar por nome"
 msgstr "Search by name"
 
-#: src/features/dashboard/overview.tsx:50
+#: src/features/dashboard/overview.tsx:54
 msgid "Cadastre itens e acompanhe tudo por aqui."
 msgstr "Add items and keep track of everything here."
 
@@ -94,11 +98,11 @@ msgstr "Add items and keep track of everything here."
 msgid "Campo obrigatório."
 msgstr "This field is required."
 
-#: src/features/items/detail.tsx:83
+#: src/features/items/detail.tsx:97
 msgid "Cancelar"
 msgstr "Cancel"
 
-#: src/pattern/widget-boundary.tsx:12
+#: src/pattern/widget-boundary.tsx:15
 msgid "Carregando"
 msgstr "Loading"
 
@@ -106,9 +110,9 @@ msgstr "Loading"
 msgid "Concluir"
 msgstr "Finish"
 
-#: src/features/profile/user-menu.tsx:32
+#: src/features/profile/user-menu.tsx:43
 #: src/routes/_main.settings.tsx:22
-#: src/routes/_main.settings.tsx:59
+#: src/routes/_main.settings.tsx:64
 #: src/routes/_main.tsx:18
 msgid "Configurações"
 msgstr "Settings"
@@ -127,11 +131,11 @@ msgstr "Create account"
 msgid "Criar item"
 msgstr "Create item"
 
-#: src/features/items/list.tsx:126
+#: src/features/items/list.tsx:125
 msgid "Crie o primeiro item para começar."
 msgstr "Create the first item to get started."
 
-#: src/features/items/detail.tsx:69
+#: src/features/items/detail.tsx:80
 #: src/features/items/item-dialog.tsx:48
 msgid "Descrição"
 msgstr "Description"
@@ -145,15 +149,15 @@ msgstr "Email"
 msgid "E-mail inválido."
 msgstr "Invalid email."
 
-#: src/features/items/detail.tsx:55
+#: src/features/items/detail.tsx:63
 msgid "Editar"
 msgstr "Edit"
 
-#: src/features/items/item-dialog.tsx:77
+#: src/features/items/item-dialog.tsx:78
 msgid "Editar item"
 msgstr "Edit item"
 
-#: src/pattern/friendly-error-dialog.tsx:24
+#: src/pattern/friendly-error-dialog.tsx:33
 msgid "Entendi"
 msgstr "Got it"
 
@@ -163,39 +167,29 @@ msgstr "Got it"
 msgid "Entrar"
 msgstr "Sign in"
 
-#: src/features/profile/avatar-upload.tsx:29
-#: src/pattern/form.tsx:195
+#: src/features/profile/avatar-upload.tsx:30
+#: src/pattern/form.tsx:240
 msgid "Enviando"
 msgstr "Sending"
 
-#: src/features/items/detail.tsx:81
+#: src/features/items/detail.tsx:94
 msgid "Essa ação não pode ser desfeita."
 msgstr "This action cannot be undone."
 
-#: src/features/items/detail.tsx:63
-#: src/features/items/detail.tsx:97
+#: src/features/items/detail.tsx:73
+#: src/features/items/detail.tsx:111
 msgid "Excluir"
 msgstr "Delete"
 
-#: src/features/items/detail.tsx:80
+#: src/features/items/detail.tsx:93
 msgid "Excluir \"{name}\"?"
 msgstr "Delete \"{name}\"?"
 
-#: src/layouts/main-layout.tsx:77
-msgid "Expandir menu"
-msgstr "Expand menu"
-
-#: src/features/items/detail.tsx:79
 #: src/features/items/item-dialog.tsx:76
-#: src/pattern/friendly-error-dialog.tsx:20
 msgid "Fechar"
 msgstr "Close"
 
-#: src/routes/__root.tsx:29
-msgid "Fechar notificação"
-msgstr "Close notification"
-
-#: src/features/profile/avatar-upload.tsx:43
+#: src/features/profile/avatar-upload.tsx:44
 msgid "Foto atualizada"
 msgstr "Photo updated"
 
@@ -211,7 +205,7 @@ msgstr "Enter your email."
 msgid "Informe sua senha."
 msgstr "Enter your password."
 
-#: src/features/items/schemas.ts:24
+#: src/features/items/schemas.ts:26
 msgid "Informe um número."
 msgstr "Enter a number."
 
@@ -223,13 +217,13 @@ msgstr "Item updated"
 msgid "Item criado"
 msgstr "Item created"
 
-#: src/features/items/detail.tsx:91
+#: src/features/items/detail.tsx:105
 msgid "Item excluído"
 msgstr "Item deleted"
 
-#: src/features/items/detail.tsx:36
+#: src/features/items/detail.tsx:44
 #: src/routes/_main.items.index.tsx:18
-#: src/routes/_main.items.index.tsx:41
+#: src/routes/_main.items.index.tsx:42
 #: src/routes/_main.tsx:17
 msgid "Itens"
 msgstr "Items"
@@ -242,11 +236,11 @@ msgstr "Already have an account? <0>Sign in</0>"
 msgid "Leva menos de um minuto."
 msgstr "It takes less than a minute."
 
-#: src/features/items/list.tsx:116
+#: src/features/items/list.tsx:115
 msgid "Lista de itens"
 msgstr "Item list"
 
-#: src/features/profile/user-menu.tsx:22
+#: src/features/profile/user-menu.tsx:30
 msgid "Menu da conta"
 msgstr "Account menu"
 
@@ -254,23 +248,24 @@ msgstr "Account menu"
 msgid "Mínimo de 8 caracteres."
 msgstr "At least 8 characters."
 
-#: src/pattern/widget-boundary.tsx:20
+#: src/pattern/widget-boundary.tsx:25
 msgid "Não foi possível carregar este conteúdo."
 msgstr "This content could not be loaded."
 
-#: src/layouts/main-layout.tsx:47
+#: src/layouts/main-layout.tsx:73
+#: src/layouts/main-layout.tsx:83
 msgid "Navegação principal"
 msgstr "Main navigation"
 
-#: src/features/items/list.tsx:125
+#: src/features/items/list.tsx:124
 msgid "Nenhum item ainda"
 msgstr "No items yet"
 
-#: src/features/items/list.tsx:121
+#: src/features/items/list.tsx:120
 msgid "Nenhum item corresponde a \"{query}\"."
 msgstr "No items match \"{query}\"."
 
-#: src/features/items/list.tsx:120
+#: src/features/items/list.tsx:119
 msgid "Nenhum resultado"
 msgstr "No results"
 
@@ -281,8 +276,12 @@ msgstr "No results"
 msgid "Nome"
 msgstr "Name"
 
-#: src/features/items/item-dialog.tsx:77
-#: src/features/items/list.tsx:104
+#: src/routes/__root.tsx:29
+msgid "Notificações"
+msgstr "Notifications"
+
+#: src/features/items/item-dialog.tsx:78
+#: src/features/items/list.tsx:103
 msgid "Novo item"
 msgstr "New item"
 
@@ -290,7 +289,7 @@ msgstr "New item"
 msgid "O endereço acessado não existe ou foi movido."
 msgstr "The address you requested does not exist or has moved."
 
-#: src/features/items/schemas.ts:26
+#: src/features/items/schemas.ts:28
 msgid "O valor mínimo é 0."
 msgstr "The minimum value is 0."
 
@@ -314,11 +313,11 @@ msgstr "Profile"
 msgid "Perfil atualizado"
 msgstr "Profile updated"
 
-#: src/features/profile/avatar-upload.tsx:50
+#: src/features/profile/avatar-upload.tsx:51
 msgid "PNG, JPG ou WebP com até 2 MB."
 msgstr "PNG, JPG or WebP up to 2 MB."
 
-#: src/features/items/item-dialog.tsx:78
+#: src/features/items/item-dialog.tsx:79
 msgid "Preencha as informações abaixo."
 msgstr "Fill in the details below."
 
@@ -338,11 +337,11 @@ msgstr "Preferences saved"
 msgid "Próxima página"
 msgstr "Next page"
 
-#: src/features/dashboard/overview.tsx:49
+#: src/features/dashboard/overview.tsx:53
 msgid "Próximos passos"
 msgstr "Next steps"
 
-#: src/features/items/detail.tsx:71
+#: src/features/items/detail.tsx:82
 #: src/features/items/item-dialog.tsx:55
 #: src/features/items/list.tsx:43
 msgid "Quantidade"
@@ -356,11 +355,7 @@ msgstr "Draft"
 msgid "Rascunhos"
 msgstr "Drafts"
 
-#: src/layouts/main-layout.tsx:77
-msgid "Recolher menu"
-msgstr "Collapse menu"
-
-#: src/pattern/cookie-consent-banner.tsx:26
+#: src/pattern/cookie-consent-banner.tsx:25
 msgid "Recusar"
 msgstr "Decline"
 
@@ -368,7 +363,7 @@ msgstr "Decline"
 msgid "Resposta inesperada do servidor"
 msgstr "Unexpected server response"
 
-#: src/features/profile/user-menu.tsx:40
+#: src/features/profile/user-menu.tsx:52
 msgid "Sair"
 msgstr "Sign out"
 
@@ -384,7 +379,7 @@ msgstr "Save changes"
 msgid "Salvar preferências"
 msgstr "Save preferences"
 
-#: src/features/items/schemas.ts:22
+#: src/features/items/schemas.ts:24
 msgid "Selecione um status."
 msgstr "Select a status."
 
@@ -410,7 +405,7 @@ msgstr "Status"
 msgid "Taxa de ativos"
 msgstr "Active rate"
 
-#: src/pattern/widget-boundary.tsx:36
+#: src/pattern/widget-boundary.tsx:42
 msgid "Tentar novamente"
 msgstr "Try again"
 
@@ -422,7 +417,7 @@ msgstr "Please try again in a moment."
 msgid "Total de itens"
 msgstr "Total items"
 
-#: src/features/profile/avatar-upload.tsx:30
+#: src/features/profile/avatar-upload.tsx:31
 msgid "Trocar foto"
 msgstr "Change photo"
 
@@ -443,7 +438,7 @@ msgstr "We use cookies to understand how the app is used. Do you accept?"
 msgid "Use no máximo {max} caracteres."
 msgstr "Use at most {max} characters."
 
-#: src/features/items/schemas.ts:25
+#: src/features/items/schemas.ts:27
 msgid "Use um número inteiro."
 msgstr "Use a whole number."
 
@@ -451,7 +446,7 @@ msgstr "Use a whole number."
 msgid "Use uma imagem PNG, JPG ou WebP."
 msgstr "Use a PNG, JPG or WebP image."
 
-#: src/features/dashboard/overview.tsx:53
+#: src/features/dashboard/overview.tsx:58
 msgid "Ver itens"
 msgstr "View items"
 

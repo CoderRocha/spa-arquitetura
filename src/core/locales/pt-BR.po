@@ -25,7 +25,7 @@ msgstr "A imagem precisa ter no máximo 2 MB."
 msgid "A senha precisa ter pelo menos 8 caracteres."
 msgstr "A senha precisa ter pelo menos 8 caracteres."
 
-#: src/pattern/cookie-consent-banner.tsx:34
+#: src/pattern/cookie-consent-banner.tsx:32
 msgid "Aceitar"
 msgstr "Aceitar"
 
@@ -42,9 +42,13 @@ msgid "Ainda não tem conta? <0>Criar conta</0>"
 msgstr "Ainda não tem conta? <0>Criar conta</0>"
 
 #: src/core/http-resource.ts:56
-#: src/pattern/widget-boundary.tsx:19
+#: src/pattern/widget-boundary.tsx:24
 msgid "Algo deu errado"
 msgstr "Algo deu errado"
+
+#: src/layouts/main-layout.tsx:69
+msgid "Alternar menu"
+msgstr "Alternar menu"
 
 #: src/features/profile/profile-form.tsx:42
 msgid "Aparece no seu perfil. Opcional."
@@ -66,7 +70,7 @@ msgstr "Ativos"
 msgid "Atualizado em"
 msgstr "Atualizado em"
 
-#: src/features/items/detail.tsx:45
+#: src/features/items/detail.tsx:52
 msgid "Atualizado em {updatedAt}"
 msgstr "Atualizado em {updatedAt}"
 
@@ -78,15 +82,15 @@ msgstr "Boas-vindas!"
 msgid "Busca, ordenação e paginação ficam na URL."
 msgstr "Busca, ordenação e paginação ficam na URL."
 
-#: src/features/items/list.tsx:112
+#: src/features/items/list.tsx:111
 msgid "Buscar itens"
 msgstr "Buscar itens"
 
-#: src/features/items/list.tsx:112
+#: src/features/items/list.tsx:111
 msgid "Buscar por nome"
 msgstr "Buscar por nome"
 
-#: src/features/dashboard/overview.tsx:50
+#: src/features/dashboard/overview.tsx:54
 msgid "Cadastre itens e acompanhe tudo por aqui."
 msgstr "Cadastre itens e acompanhe tudo por aqui."
 
@@ -94,11 +98,11 @@ msgstr "Cadastre itens e acompanhe tudo por aqui."
 msgid "Campo obrigatório."
 msgstr "Campo obrigatório."
 
-#: src/features/items/detail.tsx:83
+#: src/features/items/detail.tsx:97
 msgid "Cancelar"
 msgstr "Cancelar"
 
-#: src/pattern/widget-boundary.tsx:12
+#: src/pattern/widget-boundary.tsx:15
 msgid "Carregando"
 msgstr "Carregando"
 
@@ -106,9 +110,9 @@ msgstr "Carregando"
 msgid "Concluir"
 msgstr "Concluir"
 
-#: src/features/profile/user-menu.tsx:32
+#: src/features/profile/user-menu.tsx:43
 #: src/routes/_main.settings.tsx:22
-#: src/routes/_main.settings.tsx:59
+#: src/routes/_main.settings.tsx:64
 #: src/routes/_main.tsx:18
 msgid "Configurações"
 msgstr "Configurações"
@@ -127,11 +131,11 @@ msgstr "Criar conta"
 msgid "Criar item"
 msgstr "Criar item"
 
-#: src/features/items/list.tsx:126
+#: src/features/items/list.tsx:125
 msgid "Crie o primeiro item para começar."
 msgstr "Crie o primeiro item para começar."
 
-#: src/features/items/detail.tsx:69
+#: src/features/items/detail.tsx:80
 #: src/features/items/item-dialog.tsx:48
 msgid "Descrição"
 msgstr "Descrição"
@@ -145,15 +149,15 @@ msgstr "E-mail"
 msgid "E-mail inválido."
 msgstr "E-mail inválido."
 
-#: src/features/items/detail.tsx:55
+#: src/features/items/detail.tsx:63
 msgid "Editar"
 msgstr "Editar"
 
-#: src/features/items/item-dialog.tsx:77
+#: src/features/items/item-dialog.tsx:78
 msgid "Editar item"
 msgstr "Editar item"
 
-#: src/pattern/friendly-error-dialog.tsx:24
+#: src/pattern/friendly-error-dialog.tsx:33
 msgid "Entendi"
 msgstr "Entendi"
 
@@ -163,39 +167,29 @@ msgstr "Entendi"
 msgid "Entrar"
 msgstr "Entrar"
 
-#: src/features/profile/avatar-upload.tsx:29
-#: src/pattern/form.tsx:195
+#: src/features/profile/avatar-upload.tsx:30
+#: src/pattern/form.tsx:240
 msgid "Enviando"
 msgstr "Enviando"
 
-#: src/features/items/detail.tsx:81
+#: src/features/items/detail.tsx:94
 msgid "Essa ação não pode ser desfeita."
 msgstr "Essa ação não pode ser desfeita."
 
-#: src/features/items/detail.tsx:63
-#: src/features/items/detail.tsx:97
+#: src/features/items/detail.tsx:73
+#: src/features/items/detail.tsx:111
 msgid "Excluir"
 msgstr "Excluir"
 
-#: src/features/items/detail.tsx:80
+#: src/features/items/detail.tsx:93
 msgid "Excluir \"{name}\"?"
 msgstr "Excluir \"{name}\"?"
 
-#: src/layouts/main-layout.tsx:77
-msgid "Expandir menu"
-msgstr "Expandir menu"
-
-#: src/features/items/detail.tsx:79
 #: src/features/items/item-dialog.tsx:76
-#: src/pattern/friendly-error-dialog.tsx:20
 msgid "Fechar"
 msgstr "Fechar"
 
-#: src/routes/__root.tsx:29
-msgid "Fechar notificação"
-msgstr "Fechar notificação"
-
-#: src/features/profile/avatar-upload.tsx:43
+#: src/features/profile/avatar-upload.tsx:44
 msgid "Foto atualizada"
 msgstr "Foto atualizada"
 
@@ -211,7 +205,7 @@ msgstr "Informe seu e-mail."
 msgid "Informe sua senha."
 msgstr "Informe sua senha."
 
-#: src/features/items/schemas.ts:24
+#: src/features/items/schemas.ts:26
 msgid "Informe um número."
 msgstr "Informe um número."
 
@@ -223,13 +217,13 @@ msgstr "Item atualizado"
 msgid "Item criado"
 msgstr "Item criado"
 
-#: src/features/items/detail.tsx:91
+#: src/features/items/detail.tsx:105
 msgid "Item excluído"
 msgstr "Item excluído"
 
-#: src/features/items/detail.tsx:36
+#: src/features/items/detail.tsx:44
 #: src/routes/_main.items.index.tsx:18
-#: src/routes/_main.items.index.tsx:41
+#: src/routes/_main.items.index.tsx:42
 #: src/routes/_main.tsx:17
 msgid "Itens"
 msgstr "Itens"
@@ -242,11 +236,11 @@ msgstr "Já tem conta? <0>Entrar</0>"
 msgid "Leva menos de um minuto."
 msgstr "Leva menos de um minuto."
 
-#: src/features/items/list.tsx:116
+#: src/features/items/list.tsx:115
 msgid "Lista de itens"
 msgstr "Lista de itens"
 
-#: src/features/profile/user-menu.tsx:22
+#: src/features/profile/user-menu.tsx:30
 msgid "Menu da conta"
 msgstr "Menu da conta"
 
@@ -254,23 +248,24 @@ msgstr "Menu da conta"
 msgid "Mínimo de 8 caracteres."
 msgstr "Mínimo de 8 caracteres."
 
-#: src/pattern/widget-boundary.tsx:20
+#: src/pattern/widget-boundary.tsx:25
 msgid "Não foi possível carregar este conteúdo."
 msgstr "Não foi possível carregar este conteúdo."
 
-#: src/layouts/main-layout.tsx:47
+#: src/layouts/main-layout.tsx:73
+#: src/layouts/main-layout.tsx:83
 msgid "Navegação principal"
 msgstr "Navegação principal"
 
-#: src/features/items/list.tsx:125
+#: src/features/items/list.tsx:124
 msgid "Nenhum item ainda"
 msgstr "Nenhum item ainda"
 
-#: src/features/items/list.tsx:121
+#: src/features/items/list.tsx:120
 msgid "Nenhum item corresponde a \"{query}\"."
 msgstr "Nenhum item corresponde a \"{query}\"."
 
-#: src/features/items/list.tsx:120
+#: src/features/items/list.tsx:119
 msgid "Nenhum resultado"
 msgstr "Nenhum resultado"
 
@@ -281,8 +276,12 @@ msgstr "Nenhum resultado"
 msgid "Nome"
 msgstr "Nome"
 
-#: src/features/items/item-dialog.tsx:77
-#: src/features/items/list.tsx:104
+#: src/routes/__root.tsx:29
+msgid "Notificações"
+msgstr "Notificações"
+
+#: src/features/items/item-dialog.tsx:78
+#: src/features/items/list.tsx:103
 msgid "Novo item"
 msgstr "Novo item"
 
@@ -290,7 +289,7 @@ msgstr "Novo item"
 msgid "O endereço acessado não existe ou foi movido."
 msgstr "O endereço acessado não existe ou foi movido."
 
-#: src/features/items/schemas.ts:26
+#: src/features/items/schemas.ts:28
 msgid "O valor mínimo é 0."
 msgstr "O valor mínimo é 0."
 
@@ -314,11 +313,11 @@ msgstr "Perfil"
 msgid "Perfil atualizado"
 msgstr "Perfil atualizado"
 
-#: src/features/profile/avatar-upload.tsx:50
+#: src/features/profile/avatar-upload.tsx:51
 msgid "PNG, JPG ou WebP com até 2 MB."
 msgstr "PNG, JPG ou WebP com até 2 MB."
 
-#: src/features/items/item-dialog.tsx:78
+#: src/features/items/item-dialog.tsx:79
 msgid "Preencha as informações abaixo."
 msgstr "Preencha as informações abaixo."
 
@@ -338,11 +337,11 @@ msgstr "Preferências salvas"
 msgid "Próxima página"
 msgstr "Próxima página"
 
-#: src/features/dashboard/overview.tsx:49
+#: src/features/dashboard/overview.tsx:53
 msgid "Próximos passos"
 msgstr "Próximos passos"
 
-#: src/features/items/detail.tsx:71
+#: src/features/items/detail.tsx:82
 #: src/features/items/item-dialog.tsx:55
 #: src/features/items/list.tsx:43
 msgid "Quantidade"
@@ -356,11 +355,7 @@ msgstr "Rascunho"
 msgid "Rascunhos"
 msgstr "Rascunhos"
 
-#: src/layouts/main-layout.tsx:77
-msgid "Recolher menu"
-msgstr "Recolher menu"
-
-#: src/pattern/cookie-consent-banner.tsx:26
+#: src/pattern/cookie-consent-banner.tsx:25
 msgid "Recusar"
 msgstr "Recusar"
 
@@ -368,7 +363,7 @@ msgstr "Recusar"
 msgid "Resposta inesperada do servidor"
 msgstr "Resposta inesperada do servidor"
 
-#: src/features/profile/user-menu.tsx:40
+#: src/features/profile/user-menu.tsx:52
 msgid "Sair"
 msgstr "Sair"
 
@@ -384,7 +379,7 @@ msgstr "Salvar alterações"
 msgid "Salvar preferências"
 msgstr "Salvar preferências"
 
-#: src/features/items/schemas.ts:22
+#: src/features/items/schemas.ts:24
 msgid "Selecione um status."
 msgstr "Selecione um status."
 
@@ -410,7 +405,7 @@ msgstr "Status"
 msgid "Taxa de ativos"
 msgstr "Taxa de ativos"
 
-#: src/pattern/widget-boundary.tsx:36
+#: src/pattern/widget-boundary.tsx:42
 msgid "Tentar novamente"
 msgstr "Tentar novamente"
 
@@ -422,7 +417,7 @@ msgstr "Tente novamente em instantes."
 msgid "Total de itens"
 msgstr "Total de itens"
 
-#: src/features/profile/avatar-upload.tsx:30
+#: src/features/profile/avatar-upload.tsx:31
 msgid "Trocar foto"
 msgstr "Trocar foto"
 
@@ -443,7 +438,7 @@ msgstr "Usamos cookies para entender como a aplicação é usada. Você aceita?"
 msgid "Use no máximo {max} caracteres."
 msgstr "Use no máximo {max} caracteres."
 
-#: src/features/items/schemas.ts:25
+#: src/features/items/schemas.ts:27
 msgid "Use um número inteiro."
 msgstr "Use um número inteiro."
 
@@ -451,7 +446,7 @@ msgstr "Use um número inteiro."
 msgid "Use uma imagem PNG, JPG ou WebP."
 msgstr "Use uma imagem PNG, JPG ou WebP."
 
-#: src/features/dashboard/overview.tsx:53
+#: src/features/dashboard/overview.tsx:58
 msgid "Ver itens"
 msgstr "Ver itens"
 
