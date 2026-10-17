@@ -1,0 +1,474 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-14 22:06-0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: pt-BR\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/pattern/data-grid-footer.tsx:19
+msgid "{total, plural, one {# registro} other {# registros}}"
+msgstr "{total, plural, one {# registro} other {# registros}}"
+
+#: src/features/profile/schemas.ts:15
+msgid "A imagem precisa ter no máximo 2 MB."
+msgstr "A imagem precisa ter no máximo 2 MB."
+
+#: src/core/schemas.ts:28
+msgid "A senha precisa ter pelo menos 8 caracteres."
+msgstr "A senha precisa ter pelo menos 8 caracteres."
+
+#: src/pattern/cookie-consent-banner.tsx:34
+msgid "Aceitar"
+msgstr "Aceitar"
+
+#: src/features/auth/sign-up-form.tsx:51
+msgid "Aceito os termos de uso"
+msgstr "Aceito os termos de uso"
+
+#: src/features/auth/sign-in-form.tsx:22
+msgid "Acesse sua conta para continuar."
+msgstr "Acesse sua conta para continuar."
+
+#: src/features/auth/sign-in-form.tsx:44
+msgid "Ainda não tem conta? <0>Criar conta</0>"
+msgstr "Ainda não tem conta? <0>Criar conta</0>"
+
+#: src/core/http-resource.ts:56
+#: src/pattern/widget-boundary.tsx:19
+msgid "Algo deu errado"
+msgstr "Algo deu errado"
+
+#: src/features/profile/profile-form.tsx:42
+msgid "Aparece no seu perfil. Opcional."
+msgstr "Aparece no seu perfil. Opcional."
+
+#: src/features/items/status-badge.tsx:13
+msgid "Arquivado"
+msgstr "Arquivado"
+
+#: src/features/items/status-badge.tsx:13
+msgid "Ativo"
+msgstr "Ativo"
+
+#: src/features/dashboard/overview.tsx:15
+msgid "Ativos"
+msgstr "Ativos"
+
+#: src/features/items/list.tsx:48
+msgid "Atualizado em"
+msgstr "Atualizado em"
+
+#: src/features/items/detail.tsx:45
+msgid "Atualizado em {updatedAt}"
+msgstr "Atualizado em {updatedAt}"
+
+#: src/routes/_onboarding.welcome.tsx:13
+msgid "Boas-vindas!"
+msgstr "Boas-vindas!"
+
+#: src/routes/_main.items.index.tsx:21
+msgid "Busca, ordenação e paginação ficam na URL."
+msgstr "Busca, ordenação e paginação ficam na URL."
+
+#: src/features/items/list.tsx:112
+msgid "Buscar itens"
+msgstr "Buscar itens"
+
+#: src/features/items/list.tsx:112
+msgid "Buscar por nome"
+msgstr "Buscar por nome"
+
+#: src/features/dashboard/overview.tsx:50
+msgid "Cadastre itens e acompanhe tudo por aqui."
+msgstr "Cadastre itens e acompanhe tudo por aqui."
+
+#: src/core/schemas.ts:8
+msgid "Campo obrigatório."
+msgstr "Campo obrigatório."
+
+#: src/features/items/detail.tsx:83
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#: src/pattern/widget-boundary.tsx:12
+msgid "Carregando"
+msgstr "Carregando"
+
+#: src/routes/_onboarding.welcome.tsx:20
+msgid "Concluir"
+msgstr "Concluir"
+
+#: src/features/profile/user-menu.tsx:32
+#: src/routes/_main.settings.tsx:22
+#: src/routes/_main.settings.tsx:59
+#: src/routes/_main.tsx:18
+msgid "Configurações"
+msgstr "Configurações"
+
+#: src/routes/_onboarding.welcome.tsx:16
+msgid "Conte um pouco sobre você para concluir o cadastro."
+msgstr "Conte um pouco sobre você para concluir o cadastro."
+
+#: src/features/auth/sign-up-form.tsx:21
+#: src/features/auth/sign-up-form.tsx:53
+#: src/routes/_auth.register.tsx:10
+msgid "Criar conta"
+msgstr "Criar conta"
+
+#: src/features/items/item-dialog.tsx:59
+msgid "Criar item"
+msgstr "Criar item"
+
+#: src/features/items/list.tsx:126
+msgid "Crie o primeiro item para começar."
+msgstr "Crie o primeiro item para começar."
+
+#: src/features/items/detail.tsx:69
+#: src/features/items/item-dialog.tsx:48
+msgid "Descrição"
+msgstr "Descrição"
+
+#: src/features/auth/sign-in-form.tsx:35
+#: src/features/auth/sign-up-form.tsx:38
+msgid "E-mail"
+msgstr "E-mail"
+
+#: src/core/schemas.ts:23
+msgid "E-mail inválido."
+msgstr "E-mail inválido."
+
+#: src/features/items/detail.tsx:55
+msgid "Editar"
+msgstr "Editar"
+
+#: src/features/items/item-dialog.tsx:77
+msgid "Editar item"
+msgstr "Editar item"
+
+#: src/pattern/friendly-error-dialog.tsx:24
+msgid "Entendi"
+msgstr "Entendi"
+
+#: src/features/auth/sign-in-form.tsx:21
+#: src/features/auth/sign-in-form.tsx:40
+#: src/routes/_auth.login.tsx:13
+msgid "Entrar"
+msgstr "Entrar"
+
+#: src/features/profile/avatar-upload.tsx:29
+#: src/pattern/form.tsx:195
+msgid "Enviando"
+msgstr "Enviando"
+
+#: src/features/items/detail.tsx:81
+msgid "Essa ação não pode ser desfeita."
+msgstr "Essa ação não pode ser desfeita."
+
+#: src/features/items/detail.tsx:63
+#: src/features/items/detail.tsx:97
+msgid "Excluir"
+msgstr "Excluir"
+
+#: src/features/items/detail.tsx:80
+msgid "Excluir \"{name}\"?"
+msgstr "Excluir \"{name}\"?"
+
+#: src/layouts/main-layout.tsx:77
+msgid "Expandir menu"
+msgstr "Expandir menu"
+
+#: src/features/items/detail.tsx:79
+#: src/features/items/item-dialog.tsx:76
+#: src/pattern/friendly-error-dialog.tsx:20
+msgid "Fechar"
+msgstr "Fechar"
+
+#: src/routes/__root.tsx:29
+msgid "Fechar notificação"
+msgstr "Fechar notificação"
+
+#: src/features/profile/avatar-upload.tsx:43
+msgid "Foto atualizada"
+msgstr "Foto atualizada"
+
+#: src/features/settings/preferences-form.tsx:40
+msgid "Idioma"
+msgstr "Idioma"
+
+#: src/core/schemas.ts:22
+msgid "Informe seu e-mail."
+msgstr "Informe seu e-mail."
+
+#: src/features/auth/schemas.ts:9
+msgid "Informe sua senha."
+msgstr "Informe sua senha."
+
+#: src/features/items/schemas.ts:24
+msgid "Informe um número."
+msgstr "Informe um número."
+
+#: src/features/items/item-dialog.tsx:29
+msgid "Item atualizado"
+msgstr "Item atualizado"
+
+#: src/features/items/item-dialog.tsx:29
+msgid "Item criado"
+msgstr "Item criado"
+
+#: src/features/items/detail.tsx:91
+msgid "Item excluído"
+msgstr "Item excluído"
+
+#: src/features/items/detail.tsx:36
+#: src/routes/_main.items.index.tsx:18
+#: src/routes/_main.items.index.tsx:41
+#: src/routes/_main.tsx:17
+msgid "Itens"
+msgstr "Itens"
+
+#: src/features/auth/sign-up-form.tsx:57
+msgid "Já tem conta? <0>Entrar</0>"
+msgstr "Já tem conta? <0>Entrar</0>"
+
+#: src/features/auth/sign-up-form.tsx:22
+msgid "Leva menos de um minuto."
+msgstr "Leva menos de um minuto."
+
+#: src/features/items/list.tsx:116
+msgid "Lista de itens"
+msgstr "Lista de itens"
+
+#: src/features/profile/user-menu.tsx:22
+msgid "Menu da conta"
+msgstr "Menu da conta"
+
+#: src/features/auth/sign-up-form.tsx:46
+msgid "Mínimo de 8 caracteres."
+msgstr "Mínimo de 8 caracteres."
+
+#: src/pattern/widget-boundary.tsx:20
+msgid "Não foi possível carregar este conteúdo."
+msgstr "Não foi possível carregar este conteúdo."
+
+#: src/layouts/main-layout.tsx:47
+msgid "Navegação principal"
+msgstr "Navegação principal"
+
+#: src/features/items/list.tsx:125
+msgid "Nenhum item ainda"
+msgstr "Nenhum item ainda"
+
+#: src/features/items/list.tsx:121
+msgid "Nenhum item corresponde a \"{query}\"."
+msgstr "Nenhum item corresponde a \"{query}\"."
+
+#: src/features/items/list.tsx:120
+msgid "Nenhum resultado"
+msgstr "Nenhum resultado"
+
+#: src/features/auth/sign-up-form.tsx:35
+#: src/features/items/item-dialog.tsx:46
+#: src/features/items/list.tsx:25
+#: src/features/profile/profile-form.tsx:39
+msgid "Nome"
+msgstr "Nome"
+
+#: src/features/items/item-dialog.tsx:77
+#: src/features/items/list.tsx:104
+msgid "Novo item"
+msgstr "Novo item"
+
+#: src/layouts/pages/not-found-page.tsx:11
+msgid "O endereço acessado não existe ou foi movido."
+msgstr "O endereço acessado não existe ou foi movido."
+
+#: src/features/items/schemas.ts:26
+msgid "O valor mínimo é 0."
+msgstr "O valor mínimo é 0."
+
+#: src/pattern/data-grid-footer.tsx:22
+msgid "Página {page} de {pageCount}"
+msgstr "Página {page} de {pageCount}"
+
+#: src/pattern/data-grid-footer.tsx:26
+msgid "Página anterior"
+msgstr "Página anterior"
+
+#: src/layouts/pages/not-found-page.tsx:10
+msgid "Página não encontrada"
+msgstr "Página não encontrada"
+
+#: src/routes/_main.settings.tsx:33
+msgid "Perfil"
+msgstr "Perfil"
+
+#: src/features/profile/profile-form.tsx:23
+msgid "Perfil atualizado"
+msgstr "Perfil atualizado"
+
+#: src/features/profile/avatar-upload.tsx:50
+msgid "PNG, JPG ou WebP com até 2 MB."
+msgstr "PNG, JPG ou WebP com até 2 MB."
+
+#: src/features/items/item-dialog.tsx:78
+msgid "Preencha as informações abaixo."
+msgstr "Preencha as informações abaixo."
+
+#: src/routes/_main.settings.tsx:36
+msgid "Preferências"
+msgstr "Preferências"
+
+#: src/pattern/cookie-consent-banner.tsx:14
+msgid "Preferências de cookies"
+msgstr "Preferências de cookies"
+
+#: src/features/settings/preferences-form.tsx:25
+msgid "Preferências salvas"
+msgstr "Preferências salvas"
+
+#: src/pattern/data-grid-footer.tsx:37
+msgid "Próxima página"
+msgstr "Próxima página"
+
+#: src/features/dashboard/overview.tsx:49
+msgid "Próximos passos"
+msgstr "Próximos passos"
+
+#: src/features/items/detail.tsx:71
+#: src/features/items/item-dialog.tsx:55
+#: src/features/items/list.tsx:43
+msgid "Quantidade"
+msgstr "Quantidade"
+
+#: src/features/items/status-badge.tsx:13
+msgid "Rascunho"
+msgstr "Rascunho"
+
+#: src/features/dashboard/overview.tsx:16
+msgid "Rascunhos"
+msgstr "Rascunhos"
+
+#: src/layouts/main-layout.tsx:77
+msgid "Recolher menu"
+msgstr "Recolher menu"
+
+#: src/pattern/cookie-consent-banner.tsx:26
+msgid "Recusar"
+msgstr "Recusar"
+
+#: src/core/http-resource.ts:115
+msgid "Resposta inesperada do servidor"
+msgstr "Resposta inesperada do servidor"
+
+#: src/features/profile/user-menu.tsx:40
+msgid "Sair"
+msgstr "Sair"
+
+#: src/features/profile/profile-form.tsx:45
+msgid "Salvar"
+msgstr "Salvar"
+
+#: src/features/items/item-dialog.tsx:59
+msgid "Salvar alterações"
+msgstr "Salvar alterações"
+
+#: src/features/settings/preferences-form.tsx:42
+msgid "Salvar preferências"
+msgstr "Salvar preferências"
+
+#: src/features/items/schemas.ts:22
+msgid "Selecione um status."
+msgstr "Selecione um status."
+
+#: src/core/http-resource.ts:104
+msgid "Sem conexão"
+msgstr "Sem conexão"
+
+#: src/features/auth/sign-in-form.tsx:38
+#: src/features/auth/sign-up-form.tsx:43
+msgid "Senha"
+msgstr "Senha"
+
+#: src/features/profile/profile-form.tsx:42
+msgid "Sobre você"
+msgstr "Sobre você"
+
+#: src/features/items/item-dialog.tsx:52
+#: src/features/items/list.tsx:38
+msgid "Status"
+msgstr "Status"
+
+#: src/features/dashboard/overview.tsx:17
+msgid "Taxa de ativos"
+msgstr "Taxa de ativos"
+
+#: src/pattern/widget-boundary.tsx:36
+msgid "Tentar novamente"
+msgstr "Tentar novamente"
+
+#: src/core/http-resource.ts:56
+msgid "Tente novamente em instantes."
+msgstr "Tente novamente em instantes."
+
+#: src/features/dashboard/overview.tsx:14
+msgid "Total de itens"
+msgstr "Total de itens"
+
+#: src/features/profile/avatar-upload.tsx:30
+msgid "Trocar foto"
+msgstr "Trocar foto"
+
+#: src/routes/_main.dashboard.tsx:16
+msgid "Um resumo do que está acontecendo."
+msgstr "Um resumo do que está acontecendo."
+
+#: src/layouts/auth-layout.tsx:16
+msgid "Uma base sólida para construir a sua próxima aplicação."
+msgstr "Uma base sólida para construir a sua próxima aplicação."
+
+#: src/pattern/cookie-consent-banner.tsx:17
+msgid "Usamos cookies para entender como a aplicação é usada. Você aceita?"
+msgstr "Usamos cookies para entender como a aplicação é usada. Você aceita?"
+
+#: src/core/schemas.ts:9
+#: src/core/schemas.ts:16
+msgid "Use no máximo {max} caracteres."
+msgstr "Use no máximo {max} caracteres."
+
+#: src/features/items/schemas.ts:25
+msgid "Use um número inteiro."
+msgstr "Use um número inteiro."
+
+#: src/features/profile/schemas.ts:14
+msgid "Use uma imagem PNG, JPG ou WebP."
+msgstr "Use uma imagem PNG, JPG ou WebP."
+
+#: src/features/dashboard/overview.tsx:53
+msgid "Ver itens"
+msgstr "Ver itens"
+
+#: src/core/http-resource.ts:104
+msgid "Verifique sua internet e tente novamente."
+msgstr "Verifique sua internet e tente novamente."
+
+#: src/routes/_main.dashboard.tsx:13
+#: src/routes/_main.dashboard.tsx:28
+#: src/routes/_main.tsx:16
+msgid "Visão geral"
+msgstr "Visão geral"
+
+#: src/features/auth/schemas.ts:21
+msgid "Você precisa aceitar os termos de uso."
+msgstr "Você precisa aceitar os termos de uso."
+
+#: src/layouts/pages/not-found-page.tsx:13
+msgid "Voltar ao início"
+msgstr "Voltar ao início"
