@@ -1,4 +1,4 @@
-import { cva } from '@ui/variants'
+import { cva } from 'class-variance-authority'
 
 export const DATA_GRID_ROW_HEIGHT = {
   compact: 40,
@@ -7,8 +7,7 @@ export const DATA_GRID_ROW_HEIGHT = {
 
 export type DataGridDensity = keyof typeof DATA_GRID_ROW_HEIGHT
 
-export const dataGridRowVariants = cva({
-  base: 'absolute left-0 grid w-full items-center',
+export const dataGridRowVariants = cva('absolute left-0 grid w-full items-center', {
   variants: {
     density: {
       compact: 'h-10 text-xs',

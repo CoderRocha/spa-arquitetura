@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react'
 import { useRef, type ReactNode } from 'react'
-import { ChevronDownIcon, ChevronUpIcon } from '@ui/icons'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@ui/table'
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@ui/table'
 import { useTableContext } from '@pattern/data-grid.contexts'
 import { DATA_GRID_ROW_HEIGHT, dataGridRowVariants, type DataGridDensity } from '@pattern/data-grid.variants'
 
@@ -29,10 +29,10 @@ export const DataGridTable = ({ caption, density = 'comfortable', emptyState }: 
     .join(' ')
 
   return (
-    <div ref={scrollRef} data-slot="data-grid-table" className="max-h-[60vh] overflow-auto">
-      <Table className="grid min-w-max">
+    <div ref={scrollRef} data-slot="data-grid-table" className="max-h-[60vh] overflow-auto overscroll-contain">
+      <table data-slot="table" className="grid w-full min-w-max caption-bottom text-sm">
         <caption className="sr-only">{caption}</caption>
-        <TableHeader className="sticky top-0 z-10 grid backdrop-blur">
+        <TableHeader className="sticky top-0 z-10 grid bg-muted/80 backdrop-blur">
           {table.getHeaderGroups().map((group) => (
             <TableRow key={group.id} className="grid hover:bg-transparent" style={{ gridTemplateColumns }}>
               {group.headers.map((header) => {
@@ -41,7 +41,7 @@ export const DataGridTable = ({ caption, density = 'comfortable', emptyState }: 
                   <TableHead
                     key={header.id}
                     aria-sort={sorted ? ariaSort[sorted] : undefined}
-                    className="flex items-center"
+                    className="flex items-center px-3 text-xs tracking-wide text-muted-foreground uppercase"
                   >
                     {header.column.getCanSort() ? (
                       <button
@@ -50,8 +50,8 @@ export const DataGridTable = ({ caption, density = 'comfortable', emptyState }: 
                         className="inline-flex cursor-pointer items-center gap-1 uppercase hover:text-foreground"
                       >
                         <table.FlexRender header={header} />
-                        {sorted === 'asc' && <ChevronUpIcon />}
-                        {sorted === 'desc' && <ChevronDownIcon />}
+                        {sorted === 'asc' && <ArrowUpIcon className="size-3.5" />}
+                        {sorted === 'desc' && <ArrowDownIcon className="size-3.5" />}
                       </button>
                     ) : (
                       <table.FlexRender header={header} />
@@ -73,7 +73,7 @@ export const DataGridTable = ({ caption, density = 'comfortable', emptyState }: 
                 style={{ gridTemplateColumns, transform: `translateY(${item.start}px)` }}
               >
                 {row.getAllCells().map((cell) => (
-                  <TableCell key={cell.id} className="truncate">
+                  <TableCell key={cell.id} className="truncate px-3">
                     <table.FlexRender cell={cell} />
                   </TableCell>
                 ))}
@@ -81,7 +81,7 @@ export const DataGridTable = ({ caption, density = 'comfortable', emptyState }: 
             )
           })}
         </TableBody>
-      </Table>
+      </table>
       {rows.length === 0 && emptyState}
     </div>
   )

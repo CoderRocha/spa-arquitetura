@@ -1,6 +1,6 @@
 import { createTableHook } from '@tanstack/react-table'
+import { cn } from 'cn'
 import type { ReactNode } from 'react'
-import { cx } from '@ui/variants'
 import { DataGridFooter } from '@pattern/data-grid-footer'
 import { DataGridHeader } from '@pattern/data-grid-header'
 import { DataGridTable } from '@pattern/data-grid-table'
@@ -30,10 +30,7 @@ export const DataGridFrame = ({ busy = false, children }: DataGridFrameProps) =>
   <div
     data-slot="data-grid"
     aria-busy={busy}
-    className={cx(
-      'overflow-hidden rounded-card border border-border bg-surface transition-opacity',
-      busy && 'opacity-60',
-    )}
+    className={cn('overflow-hidden rounded-xl border bg-card transition-opacity', busy && 'opacity-60')}
   >
     {children}
   </div>

@@ -1,15 +1,20 @@
 import { useLingui } from '@lingui/react/macro'
 import { QueryErrorResetBoundary, useQueryErrorResetBoundary } from '@tanstack/react-query'
 import { CatchBoundary, useRouter, type ErrorComponentProps } from '@tanstack/react-router'
+import { CircleAlertIcon } from 'lucide-react'
 import { Suspense, type ReactNode } from 'react'
 import { isFriendlyError } from '@core/http-resource'
 import { Alert, AlertDescription, AlertTitle } from '@ui/alert'
 import { Button } from '@ui/button'
-import { Loading } from '@ui/loading'
+import { Spinner } from '@ui/spinner'
 
 export const PendingFallback = () => {
   const { t } = useLingui()
-  return <Loading label={t`Carregando`} />
+  return (
+    <div className="flex min-h-40 items-center justify-center text-primary">
+      <Spinner aria-label={t`Carregando`} className="size-6" />
+    </div>
+  )
 }
 
 export const ErrorFallback = ({ error, reset }: ErrorComponentProps) => {
@@ -20,13 +25,14 @@ export const ErrorFallback = ({ error, reset }: ErrorComponentProps) => {
   const detail = isFriendlyError(error) ? error.detail : t`Não foi possível carregar este conteúdo.`
 
   return (
-    <Alert tone="danger">
+    <Alert variant="destructive">
+      <CircleAlertIcon />
       <AlertTitle>{title}</AlertTitle>
-      {detail && <AlertDescription>{detail}</AlertDescription>}
-      <div className="mt-2">
+      <AlertDescription className="flex flex-col items-start gap-2">
+        {detail}
         <Button
           size="sm"
-          variant="secondary"
+          variant="outline"
           onClick={() => {
             resetQueries()
             reset()
@@ -35,7 +41,7 @@ export const ErrorFallback = ({ error, reset }: ErrorComponentProps) => {
         >
           {t`Tentar novamente`}
         </Button>
-      </div>
+      </AlertDescription>
     </Alert>
   )
 }

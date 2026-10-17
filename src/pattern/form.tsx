@@ -1,15 +1,18 @@
 import { useLingui } from '@lingui/react/macro'
-import type { ReactNode } from 'react'
+import { CircleAlertIcon } from 'lucide-react'
+import { useId, type ReactNode } from 'react'
 import { Alert, AlertTitle } from '@ui/alert'
 import { Button } from '@ui/button'
 import { Checkbox } from '@ui/checkbox'
-import { FormDescription, FormError, FormField, FormLabel } from '@ui/form'
+import { Field, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet } from '@ui/field'
 import { Input } from '@ui/input'
-import { Spinner } from '@ui/loading'
 import { RadioGroup, RadioGroupItem } from '@ui/radio-group'
-import { Select, type SelectOption } from '@ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select'
+import { Spinner } from '@ui/spinner'
 import { Textarea } from '@ui/textarea'
 import { useFieldContext, useFormContext } from '@pattern/form.contexts'
+
+export type FieldOption = { value: string; label: string }
 
 export const toErrorMessages = (errors: readonly unknown[]): string[] =>
   errors.flatMap((error): string[] => {
@@ -21,22 +24,31 @@ export const toErrorMessages = (errors: readonly unknown[]): string[] =>
     return []
   })
 
+type ControlProps = {
+  id: string
+  'aria-invalid': boolean
+  'aria-describedby': string | undefined
+}
+
 type FieldShellProps = {
   label: string
   description?: string | undefined
-  children: ReactNode
+  children: (control: ControlProps) => ReactNode
 }
 
 const FieldShell = ({ label, description, children }: FieldShellProps) => {
   const field = useFieldContext<unknown>()
-  const [message] = toErrorMessages(field.state.meta.errors)
+  const id = useId()
+  const [error] = toErrorMessages(field.state.meta.errors)
+  const describedBy = [description && `${id}-description`, error && `${id}-error`].filter(Boolean).join(' ')
+
   return (
-    <FormField name={field.name} invalid={message !== undefined} touched={field.state.meta.isTouched}>
-      <FormLabel>{label}</FormLabel>
-      {children}
-      {description && <FormDescription>{description}</FormDescription>}
-      {message && <FormError match>{message}</FormError>}
-    </FormField>
+    <Field data-invalid={error !== undefined}>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      {children({ id, 'aria-invalid': error !== undefined, 'aria-describedby': describedBy || undefined })}
+      {description && <FieldDescription id={`${id}-description`}>{description}</FieldDescription>}
+      {error && <FieldError id={`${id}-error`}>{error}</FieldError>}
+    </Field>
   )
 }
 
@@ -52,15 +64,19 @@ export const TextField = ({ label, description, type = 'text', ...props }: TextF
   const field = useFieldContext<string>()
   return (
     <FieldShell label={label} description={description}>
-      <Input
-        type={type}
-        value={field.state.value}
-        onValueChange={(value) => {
-          field.handleChange(value)
-        }}
-        onBlur={field.handleBlur}
-        {...props}
-      />
+      {(control) => (
+        <Input
+          {...control}
+          {...props}
+          type={type}
+          name={field.name}
+          value={field.state.value}
+          onChange={(event) => {
+            field.handleChange(event.target.value)
+          }}
+          onBlur={field.handleBlur}
+        />
+      )}
     </FieldShell>
   )
 }
@@ -76,16 +92,20 @@ export const NumberField = ({ label, description, ...props }: NumberFieldProps) 
   const field = useFieldContext<number>()
   return (
     <FieldShell label={label} description={description}>
-      <Input
-        type="number"
-        inputMode="numeric"
-        value={String(field.state.value)}
-        onValueChange={(value) => {
-          field.handleChange(Number(value))
-        }}
-        onBlur={field.handleBlur}
-        {...props}
-      />
+      {(control) => (
+        <Input
+          {...control}
+          {...props}
+          type="number"
+          inputMode="numeric"
+          name={field.name}
+          value={String(field.state.value)}
+          onChange={(event) => {
+            field.handleChange(Number(event.target.value))
+          }}
+          onBlur={field.handleBlur}
+        />
+      )}
     </FieldShell>
   )
 }
@@ -101,14 +121,18 @@ export const TextareaField = ({ label, description, ...props }: TextareaFieldPro
   const field = useFieldContext<string>()
   return (
     <FieldShell label={label} description={description}>
-      <Textarea
-        value={field.state.value}
-        onValueChange={(value) => {
-          field.handleChange(value)
-        }}
-        onBlur={field.handleBlur}
-        {...props}
-      />
+      {(control) => (
+        <Textarea
+          {...control}
+          {...props}
+          name={field.name}
+          value={field.state.value}
+          onChange={(event) => {
+            field.handleChange(event.target.value)
+          }}
+          onBlur={field.handleBlur}
+        />
+      )}
     </FieldShell>
   )
 }
@@ -116,7 +140,7 @@ export const TextareaField = ({ label, description, ...props }: TextareaFieldPro
 type SelectFieldProps = {
   label: string
   description?: string
-  options: readonly SelectOption[]
+  options: readonly FieldOption[]
   placeholder?: string
 }
 
@@ -124,14 +148,27 @@ export const SelectField = ({ label, description, options, placeholder }: Select
   const field = useFieldContext<string>()
   return (
     <FieldShell label={label} description={description}>
-      <Select
-        options={options}
-        value={field.state.value}
-        placeholder={placeholder}
-        onValueChange={(value) => {
-          field.handleChange(value)
-        }}
-      />
+      {(control) => (
+        <Select
+          items={options}
+          name={field.name}
+          value={field.state.value}
+          onValueChange={(value) => {
+            if (value !== null) field.handleChange(value)
+          }}
+        >
+          <SelectTrigger {...control} className="w-full" onBlur={field.handleBlur}>
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            {options.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
     </FieldShell>
   )
 }
@@ -139,26 +176,32 @@ export const SelectField = ({ label, description, options, placeholder }: Select
 type RadioGroupFieldProps = {
   label: string
   description?: string
-  options: readonly SelectOption[]
+  options: readonly FieldOption[]
 }
 
 export const RadioGroupField = ({ label, description, options }: RadioGroupFieldProps) => {
   const field = useFieldContext<string>()
+  const [error] = toErrorMessages(field.state.meta.errors)
   return (
-    <FieldShell label={label} description={description}>
+    <FieldSet data-invalid={error !== undefined}>
+      <FieldLegend variant="label">{label}</FieldLegend>
+      {description && <FieldDescription>{description}</FieldDescription>}
       <RadioGroup
+        name={field.name}
         value={field.state.value}
         onValueChange={(value) => {
           if (typeof value === 'string') field.handleChange(value)
         }}
       >
         {options.map((option) => (
-          <RadioGroupItem key={option.value} value={option.value}>
+          <FieldLabel key={option.value} className="font-normal">
+            <RadioGroupItem value={option.value} aria-invalid={error !== undefined} />
             {option.label}
-          </RadioGroupItem>
+          </FieldLabel>
         ))}
       </RadioGroup>
-    </FieldShell>
+      {error && <FieldError>{error}</FieldError>}
+    </FieldSet>
   )
 }
 
@@ -168,20 +211,22 @@ type CheckboxFieldProps = {
 
 export const CheckboxField = ({ label }: CheckboxFieldProps) => {
   const field = useFieldContext<boolean>()
-  const [message] = toErrorMessages(field.state.meta.errors)
+  const [error] = toErrorMessages(field.state.meta.errors)
   return (
-    <FormField name={field.name} invalid={message !== undefined}>
-      <FormLabel className="flex items-center gap-2 font-normal">
+    <Field data-invalid={error !== undefined}>
+      <FieldLabel className="font-normal">
         <Checkbox
+          name={field.name}
           checked={field.state.value}
+          aria-invalid={error !== undefined}
           onCheckedChange={(checked) => {
             field.handleChange(checked)
           }}
         />
         {label}
-      </FormLabel>
-      {message && <FormError match>{message}</FormError>}
-    </FormField>
+      </FieldLabel>
+      {error && <FieldError>{error}</FieldError>}
+    </Field>
   )
 }
 
@@ -191,8 +236,8 @@ export const SubmitButton = ({ children, className }: { children: ReactNode; cla
   return (
     <form.Subscribe selector={(state) => state.isSubmitting}>
       {(isSubmitting) => (
-        <Button type="submit" disabled={isSubmitting} className={className}>
-          {isSubmitting && <Spinner label={t`Enviando`} className="size-4" />}
+        <Button type="submit" size="lg" disabled={isSubmitting} className={className}>
+          {isSubmitting && <Spinner aria-label={t`Enviando`} />}
           {children}
         </Button>
       )}
@@ -206,7 +251,8 @@ export const FormErrorAlert = () => {
     <form.Subscribe selector={(state) => toErrorMessages(state.errors)[0]}>
       {(message) =>
         message && (
-          <Alert tone="danger">
+          <Alert variant="destructive">
+            <CircleAlertIcon />
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         )

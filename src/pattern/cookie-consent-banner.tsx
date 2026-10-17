@@ -12,13 +12,12 @@ export const CookieConsentBanner = () => {
   return (
     <section
       aria-label={t`Preferências de cookies`}
-      className="fixed bottom-4 left-4 z-40 flex max-w-md flex-col gap-3 rounded-card border border-border bg-surface p-4 text-sm shadow-popup"
+      className="fixed inset-x-4 bottom-4 z-40 flex flex-col gap-3 rounded-xl border bg-popover p-4 text-sm text-popover-foreground shadow-lg sm:right-auto sm:max-w-md"
     >
-      <p className="text-muted">{t`Usamos cookies para entender como a aplicação é usada. Você aceita?`}</p>
+      <p className="text-muted-foreground">{t`Usamos cookies para entender como a aplicação é usada. Você aceita?`}</p>
       <div className="flex justify-end gap-2">
         <Button
-          size="sm"
-          variant="secondary"
+          variant="outline"
           onClick={() => {
             setConsent('denied')
           }}
@@ -26,7 +25,6 @@ export const CookieConsentBanner = () => {
           {t`Recusar`}
         </Button>
         <Button
-          size="sm"
           onClick={() => {
             setConsent('granted')
           }}
