@@ -20,6 +20,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@core/*": ["./src/core/*"],
+      "@ui": ["./src/ui"],
       "@ui/*": ["./src/ui/*"],
       "@pattern/*": ["./src/pattern/*"],
       "@features/*": ["./src/features/*"],

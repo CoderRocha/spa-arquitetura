@@ -8,11 +8,20 @@
   "rules": {
     "import/no-cycle": "error",
     "import/no-self-import": "error",
-    "import/no-unassigned-import": ["warn", { "allow": ["**/*.css", "@/styles.css"] }],
+    "import/no-unassigned-import": ["warn", { "allow": ["**/*.css", "@/styles.css", "react"] }],
     "no-underscore-dangle": ["warn", { "allow": ["_def", "__APP_VERSION__"] }],
     "vitest/expect-expect": ["error", { "assertFunctionNames": ["expect", "screen.findBy*", "screen.getBy*"] }],
     "react/react-in-jsx-scope": "off",
     "react/incompatible-library": "off"
   },
+  "overrides": [
+    {
+      "files": ["src/ui/**"],
+      "rules": {
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "jsx-a11y/label-has-associated-control": "off"
+      }
+    }
+  ],
   "ignorePatterns": ["dist", "src/routeTree.gen.ts"]
 }
