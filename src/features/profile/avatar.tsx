@@ -1,5 +1,5 @@
 import type { Profile } from '@core/api/profile'
-import { cx } from '@ui/variants'
+import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar'
 
 const initialsOf = (name: string) =>
   name
@@ -11,20 +11,13 @@ const initialsOf = (name: string) =>
 
 type ProfileAvatarProps = {
   profile: Pick<Profile, 'name' | 'avatarUrl'>
+  size?: 'sm' | 'default' | 'lg'
   className?: string
 }
 
-export const ProfileAvatar = ({ profile, className }: ProfileAvatarProps) => (
-  <span
-    className={cx(
-      'inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/15 text-xs font-semibold text-primary',
-      className,
-    )}
-  >
-    {profile.avatarUrl ? (
-      <img src={profile.avatarUrl} alt="" className="size-full object-cover" />
-    ) : (
-      initialsOf(profile.name)
-    )}
-  </span>
+export const ProfileAvatar = ({ profile, size, className }: ProfileAvatarProps) => (
+  <Avatar size={size} className={className}>
+    {profile.avatarUrl && <AvatarImage src={profile.avatarUrl} alt="" />}
+    <AvatarFallback className="bg-primary/15 font-semibold text-primary">{initialsOf(profile.name)}</AvatarFallback>
+  </Avatar>
 )

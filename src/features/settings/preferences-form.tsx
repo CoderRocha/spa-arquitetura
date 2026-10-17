@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { useAppStore } from '@core/app-store'
 import type { Locale } from '@core/constants'
 import { changeLocale } from '@core/i18n'
-import { toastManager } from '@ui/toaster'
 import { createFormSubmitHandler, schemaValidation, useAppForm } from '@pattern/form.hooks'
 import { preferencesSchema } from '@features/settings/schemas'
 
@@ -22,7 +22,7 @@ export const PreferencesForm = () => {
     onSubmit: createFormSubmitHandler(preferencesSchema, async (preferences) => {
       await changeLocale(preferences.locale)
       await queryClient.invalidateQueries()
-      toastManager.add({ title: t`Preferências salvas`, type: 'success' })
+      toast.success(t`Preferências salvas`)
     }),
   })
 

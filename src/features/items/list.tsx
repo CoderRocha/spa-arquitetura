@@ -5,8 +5,8 @@ import { functionalUpdate } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
 import { ITEM_SORT_FIELDS, type Item } from '@core/api/items'
 import { itemListQuery } from '@core/queries'
+import { PlusIcon } from 'lucide-react'
 import { Button } from '@ui/button'
-import { PlusIcon } from '@ui/icons'
 import { createDataGridColumnHelper, DataGridFrame, useDataGrid } from '@pattern/data-grid'
 import { EmptyState } from '@features/items/empty-state'
 import { ItemDialog } from '@features/items/item-dialog'
@@ -95,7 +95,6 @@ export const ItemList = ({ search, onSearchChange }: ItemListProps) => {
 
   const createButton = (
     <Button
-      size="sm"
       onClick={() => {
         setCreating(true)
       }}

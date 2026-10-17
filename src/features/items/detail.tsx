@@ -1,15 +1,23 @@
 import { useLingui } from '@lingui/react/macro'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
+import { ChevronLeftIcon } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { itemDetailQuery } from '@core/queries'
-import { Button } from '@ui/button'
-import { buttonVariants } from '@ui/button.variants'
-import { Card } from '@ui/card'
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@ui/dialog'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@ui/alert-dialog'
+import { Button, buttonVariants } from '@ui/button'
+import { Card, CardContent } from '@ui/card'
 import { PageDescription, PageHeader, PageTitle } from '@ui/header'
-import { ChevronLeftIcon } from '@ui/icons'
-import { toastManager } from '@ui/toaster'
 import { FriendlyErrorDialog } from '@pattern/friendly-error-dialog'
 import { useDeleteItem } from '@features/items/hooks'
 import { ItemDialog } from '@features/items/item-dialog'
@@ -31,23 +39,23 @@ export const ItemDetail = ({ itemId, onDeleted }: ItemDetailProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <Link to="/items" className={buttonVariants({ variant: 'link', size: 'sm', className: 'self-start' })}>
+      <Link to="/items" className={buttonVariants({ variant: 'link', className: 'self-start px-0' })}>
         <ChevronLeftIcon />
         {t`Itens`}
       </Link>
       <PageHeader className="pb-0">
-        <div>
-          <PageTitle className="flex items-center gap-3">
-            {item.name}
+        <div className="min-w-0">
+          <PageTitle className="flex flex-wrap items-center gap-3">
+            <span className="truncate">{item.name}</span>
             <ItemStatusBadge status={item.status} />
           </PageTitle>
-          <PageDescription>
-            {t`Atualizado em ${updatedAt}`}
-          </PageDescription>
+          <PageDescription>{t`Atualizado em ${updatedAt}`}</PageDescription>
         </div>
-        <div className="flex gap-2">
+        <div className="flex w-full gap-2 sm:w-auto">
           <Button
-            variant="secondary"
+            variant="outline"
+            size="lg"
+            className="flex-1 sm:flex-none"
             onClick={() => {
               setEditing(true)
             }}
@@ -55,7 +63,9 @@ export const ItemDetail = ({ itemId, onDeleted }: ItemDetailProps) => {
             {t`Editar`}
           </Button>
           <Button
-            variant="danger"
+            variant="destructive"
+            size="lg"
+            className="flex-1 sm:flex-none"
             onClick={() => {
               setConfirmingDelete(true)
             }}
@@ -65,40 +75,44 @@ export const ItemDetail = ({ itemId, onDeleted }: ItemDetailProps) => {
         </div>
       </PageHeader>
       <Card>
-        <dl className="grid gap-6 sm:grid-cols-[10rem_1fr]">
-          <dt className="text-sm text-muted">{t`Descrição`}</dt>
-          <dd className="whitespace-pre-line">{item.description || '-'}</dd>
-          <dt className="text-sm text-muted">{t`Quantidade`}</dt>
-          <dd className="tabular-nums">{i18n.number(item.quantity)}</dd>
-        </dl>
+        <CardContent>
+          <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-[10rem_1fr] sm:gap-y-6">
+            <dt className="text-muted-foreground">{t`Descrição`}</dt>
+            <dd className="whitespace-pre-line">{item.description || '-'}</dd>
+            <dt className="mt-4 text-muted-foreground sm:mt-0">{t`Quantidade`}</dt>
+            <dd className="tabular-nums">{i18n.number(item.quantity)}</dd>
+          </dl>
+        </CardContent>
       </Card>
 
       <ItemDialog open={editing} onOpenChange={setEditing} item={item} />
 
-      <Dialog open={confirmingDelete} onOpenChange={setConfirmingDelete}>
-        <DialogContent role="alertdialog" closeLabel={t`Fechar`}>
-          <DialogTitle>{t`Excluir "${name}"?`}</DialogTitle>
-          <DialogDescription>{t`Essa ação não pode ser desfeita.`}</DialogDescription>
-          <DialogFooter>
-            <DialogClose render={<Button variant="secondary" />}>{t`Cancelar`}</DialogClose>
-            <Button
-              variant="danger"
+      <AlertDialog open={confirmingDelete} onOpenChange={setConfirmingDelete}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t`Excluir "${name}"?`}</AlertDialogTitle>
+            <AlertDialogDescription>{t`Essa ação não pode ser desfeita.`}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t`Cancelar`}</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
               disabled={deleteItem.isPending}
               onClick={() => {
                 setConfirmingDelete(false)
                 deleteItem.mutate(undefined, {
                   onSuccess: () => {
-                    toastManager.add({ title: t`Item excluído`, type: 'success' })
+                    toast.success(t`Item excluído`)
                     onDeleted()
                   },
                 })
               }}
             >
               {t`Excluir`}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <FriendlyErrorDialog error={deleteItem.error} onClose={deleteItem.reset} />
     </div>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@ui/empty'
 
 type EmptyStateProps = {
   title: string
@@ -7,9 +8,11 @@ type EmptyStateProps = {
 }
 
 export const EmptyState = ({ title, description, action }: EmptyStateProps) => (
-  <div className="flex flex-col items-center gap-2 px-6 py-16 text-center">
-    <p className="font-medium">{title}</p>
-    <p className="max-w-sm text-sm text-muted">{description}</p>
-    {action && <div className="mt-3">{action}</div>}
-  </div>
+  <Empty>
+    <EmptyHeader>
+      <EmptyTitle>{title}</EmptyTitle>
+      <EmptyDescription>{description}</EmptyDescription>
+    </EmptyHeader>
+    {action && <EmptyContent>{action}</EmptyContent>}
+  </Empty>
 )

@@ -1,7 +1,7 @@
 import { useLingui } from '@lingui/react/macro'
+import { toast } from 'sonner'
 import type { Item } from '@core/api/items'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@ui/dialog'
-import { toastManager } from '@ui/toaster'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@ui/dialog'
 import { createFormSubmitHandler, schemaValidation, useAppForm } from '@pattern/form.hooks'
 import { useCreateItem, useUpdateItem } from '@features/items/hooks'
 import { itemFormSchema, type ItemFormValues } from '@features/items/schemas'
@@ -26,7 +26,7 @@ const ItemForm = ({ item, onDone }: ItemFormProps) => {
     ...schemaValidation(itemFormSchema),
     onSubmit: createFormSubmitHandler(itemFormSchema, async (input) => {
       await (item ? updateItem.mutateAsync(input) : createItem.mutateAsync(input))
-      toastManager.add({ title: item ? t`Item atualizado` : t`Item criado`, type: 'success' })
+      toast.success(item ? t`Item atualizado` : t`Item criado`)
       onDone()
     }),
   })
@@ -35,7 +35,7 @@ const ItemForm = ({ item, onDone }: ItemFormProps) => {
   return (
     <form
       noValidate
-      className="mt-5 flex flex-col gap-4"
+      className="flex flex-col gap-4"
       onSubmit={(event) => {
         event.preventDefault()
         void form.handleSubmit()
@@ -73,9 +73,11 @@ export const ItemDialog = ({ open, onOpenChange, item }: ItemDialogProps) => {
   const { t } = useLingui()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent closeLabel={t`Fechar`}>
-        <DialogTitle>{item ? t`Editar item` : t`Novo item`}</DialogTitle>
-        <DialogDescription>{t`Preencha as informações abaixo.`}</DialogDescription>
+      <DialogContent closeLabel={t`Fechar`} className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{item ? t`Editar item` : t`Novo item`}</DialogTitle>
+          <DialogDescription>{t`Preencha as informações abaixo.`}</DialogDescription>
+        </DialogHeader>
         <ItemForm
           item={item}
           onDone={() => {

@@ -1,12 +1,12 @@
 import { useLingui } from '@lingui/react/macro'
 import type { ItemStatus } from '@core/api/items'
-import { Badge, type BadgeProps } from '@ui/badge'
+import { Badge } from '@ui/badge'
 
-const tones = {
-  draft: 'neutral',
+const variants = {
+  draft: 'secondary',
   active: 'success',
   archived: 'warning',
-} as const satisfies Record<ItemStatus, BadgeProps['tone']>
+} as const
 
 export const useItemStatusLabels = (): Record<ItemStatus, string> => {
   const { t } = useLingui()
@@ -15,5 +15,5 @@ export const useItemStatusLabels = (): Record<ItemStatus, string> => {
 
 export const ItemStatusBadge = ({ status }: { status: ItemStatus }) => {
   const labels = useItemStatusLabels()
-  return <Badge tone={tones[status]}>{labels[status]}</Badge>
+  return <Badge variant={variants[status]}>{labels[status]}</Badge>
 }

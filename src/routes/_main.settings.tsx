@@ -2,9 +2,9 @@ import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router'
 import * as v from 'valibot'
-import { Card } from '@ui/card'
+import { Card, CardContent } from '@ui/card'
 import { PageHeader, PageTitle } from '@ui/header'
-import { Tabs, TabsList, TabsPanel, TabsTab } from '@ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs'
 import { AvatarUpload } from '@features/profile/avatar-upload'
 import { ProfileForm } from '@features/profile/profile-form'
 import { PreferencesForm } from '@features/settings/preferences-form'
@@ -28,25 +28,29 @@ const SettingsRoute = () => {
           if (v.is(settingsTabSchema, value)) void navigate({ search: { tab: value }, replace: true })
         }}
       >
-        <TabsList>
-          <TabsTab value="profile">
+        <TabsList className="w-full sm:w-fit">
+          <TabsTrigger value="profile">
             <Trans>Perfil</Trans>
-          </TabsTab>
-          <TabsTab value="preferences">
+          </TabsTrigger>
+          <TabsTrigger value="preferences">
             <Trans>Preferências</Trans>
-          </TabsTab>
+          </TabsTrigger>
         </TabsList>
-        <TabsPanel value="profile">
-          <Card className="flex max-w-xl flex-col gap-6">
-            <AvatarUpload />
-            <ProfileForm />
-          </Card>
-        </TabsPanel>
-        <TabsPanel value="preferences">
+        <TabsContent value="profile">
           <Card className="max-w-xl">
-            <PreferencesForm />
+            <CardContent className="flex flex-col gap-6">
+              <AvatarUpload />
+              <ProfileForm />
+            </CardContent>
           </Card>
-        </TabsPanel>
+        </TabsContent>
+        <TabsContent value="preferences">
+          <Card className="max-w-xl">
+            <CardContent>
+              <PreferencesForm />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </>
   )

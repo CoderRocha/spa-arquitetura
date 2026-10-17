@@ -2,8 +2,8 @@ import { useLingui } from '@lingui/react/macro'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { metricsQuery } from '@core/queries'
-import { buttonVariants } from '@ui/button.variants'
-import { Card, CardDescription, CardHeader, CardTitle } from '@ui/card'
+import { buttonVariants } from '@ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@ui/card'
 import { Skeleton } from '@ui/skeleton'
 import { WidgetBoundary } from '@pattern/widget-boundary'
 
@@ -18,11 +18,15 @@ const MetricsCards = () => {
   ]
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {cards.map((card) => (
         <Card key={card.label}>
-          <CardDescription>{card.label}</CardDescription>
-          <p className="mt-2 text-3xl font-semibold tracking-tight tabular-nums">{card.value}</p>
+          <CardHeader>
+            <CardDescription>{card.label}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">{card.value}</p>
+          </CardContent>
         </Card>
       ))}
     </div>
@@ -30,9 +34,9 @@ const MetricsCards = () => {
 }
 
 const MetricsSkeleton = () => (
-  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
     {Array.from({ length: 4 }, (_, index) => (
-      <Skeleton key={index} className="h-24" />
+      <Skeleton key={index} className="h-24 rounded-xl" />
     ))}
   </div>
 )
@@ -49,9 +53,11 @@ export const DashboardOverview = () => {
           <CardTitle>{t`Próximos passos`}</CardTitle>
           <CardDescription>{t`Cadastre itens e acompanhe tudo por aqui.`}</CardDescription>
         </CardHeader>
-        <Link to="/items" className={buttonVariants({ variant: 'secondary', size: 'sm' })}>
-          {t`Ver itens`}
-        </Link>
+        <CardFooter>
+          <Link to="/items" className={buttonVariants({ variant: 'outline' })}>
+            {t`Ver itens`}
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   )

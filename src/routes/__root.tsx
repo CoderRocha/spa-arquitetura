@@ -3,7 +3,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, HeadContent, Outlet } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 import { AuthProvider } from '@core/auth-provider'
-import { Toaster } from '@ui/toaster'
+import { Toaster } from '@ui/sonner'
 import { TooltipProvider } from '@ui/tooltip'
 import { CookieConsentBanner } from '@pattern/cookie-consent-banner'
 import { ErrorFallback } from '@pattern/widget-boundary'
@@ -26,7 +26,7 @@ const RootComponent = () => {
         <Outlet />
       </TooltipProvider>
       <CookieConsentBanner />
-      <Toaster closeLabel={t`Fechar notificação`} />
+      <Toaster containerAriaLabel={t`Notificações`} />
       {showDevtools && (
         <Suspense>
           <Devtools />

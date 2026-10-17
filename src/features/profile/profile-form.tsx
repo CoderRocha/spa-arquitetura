@@ -1,7 +1,7 @@
 import { useLingui } from '@lingui/react/macro'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { profileQuery } from '@core/queries'
-import { toastManager } from '@ui/toaster'
 import { createFormSubmitHandler, schemaValidation, useAppForm } from '@pattern/form.hooks'
 import { useUpdateProfile } from '@features/profile/hooks'
 import { profileFormSchema } from '@features/profile/schemas'
@@ -20,7 +20,7 @@ export const ProfileForm = ({ submitLabel, onSaved }: ProfileFormProps) => {
     ...schemaValidation(profileFormSchema),
     onSubmit: createFormSubmitHandler(profileFormSchema, async (input) => {
       await updateProfile.mutateAsync(input)
-      toastManager.add({ title: t`Perfil atualizado`, type: 'success' })
+      toast.success(t`Perfil atualizado`)
       onSaved?.()
     }),
   })
