@@ -4,7 +4,7 @@ Blueprint de single page application com camadas explícitas, limites de depend�
 
 ## Stack
 
-React 19, TypeScript estrito, Vite 8, TanStack Router (file-based, code splitting automático), TanStack Query, TanStack Form, TanStack Table 9 + Virtual, Zustand, Valibot, Tailwind CSS 4, CVA + tailwind-merge, Base UI, motion, Lingui, MSW, Vitest (jsdom + browser mode com Playwright), ESLint com `eslint-plugin-boundaries` e oxlint.
+React 19, TypeScript estrito, Vite 8, TanStack Router (file-based, code splitting automático), TanStack Query, TanStack Form, TanStack Table 9 + Virtual, Zustand, Valibot, Tailwind CSS 4, shadcn/ui (estilo `base-nova`, sobre Base UI) com class-variance-authority, `cn`, lucide-react e Sonner, Lingui, MSW, Vitest (jsdom + browser mode com Playwright), ESLint com `eslint-plugin-boundaries` e oxlint.
 
 ## Scripts
 
@@ -27,7 +27,7 @@ Antes do primeiro `test:browser`: `npx playwright install chromium`.
 ```text
 src/
   core/      fundação técnica: cliente HTTP, APIs, query keys/options, stores, auth, i18n, schemas transversais
-  ui/        design system: primitives acessíveis sobre Base UI, sem domínio e sem texto
+  ui/        design system: componentes shadcn/ui (base-nova, sobre Base UI), sem domínio e sem texto fixo
   pattern/   composições compartilhadas: infraestrutura de form, data grid, boundaries, diálogos de erro
   layouts/   shells visuais puros, recebem tudo por props
   features/  módulos autocontidos por feature (componentes, hooks, schemas)
@@ -62,6 +62,31 @@ Pacotes externos não entram na matriz. Arquivos em `__specs__/` ficam fora dela
 - Sem type assertions (`as`), exceto `as const`. Tipos são ajustados na origem, em geral inferidos de schemas Valibot.
 - `fetch` só existe em [src/core/http-resource.ts](src/core/http-resource.ts).
 
+## UI (shadcn/ui)
+
+Os componentes de `src/ui/` vêm do shadcn/ui no estilo `base-nova`, que usa `@base-ui/react` como primitivo. A composição é feita pela prop `render` (por exemplo `<DropdownMenuItem render={<Link to="/settings" />}>`), não por `asChild`. A configuração fica em [components.json](components.json).
+
+```bash
+npx shadcn@latest add <componente>
+```
+
+A CLI grava direto em `src/ui/` porque o `tsconfig.json` mapeia o alias `@ui` (além de `@ui/*`). Os componentes importam `cn` do pacote `cn` e ícones de `lucide-react`.
+
+**Mobile first.** O `Sidebar` vira um `Sheet` (gaveta) abaixo de 768px (`useIsMobile`). Dialogs, AlertDialogs e inputs já vêm responsivos (largura `calc(100%-2rem)`, rodapés empilhados, `text-base` no mobile para evitar zoom no iOS). Os layouts só usam breakpoints `sm:`/`lg:` para refinar a partir do mobile.
+
+**Ajustes locais nos componentes gerados.** O shadcn entrega código aberto, e estes ajustes fazem parte do projeto:
+
+- Textos fixos em inglês viraram props, para manter `ui/` sem texto e com i18n: `closeLabel` em `DialogContent`/`DialogFooter`/`SheetContent`, `label` em `Sidebar`/`SidebarTrigger`/`SidebarRail` e `aria-label` obrigatório no `Spinner`.
+- `Button` expõe `data-variant` e `data-size`. `Badge` ganhou as variantes `success` e `warning`.
+- O `Sidebar` não grava cookie, porque o estado aberto/fechado é persistido pela `sidebar-store`.
+- O `Toaster` (Sonner) segue o tema do sistema, sem `next-themes`.
+- `useIsMobile` usa `useSyncExternalStore` em vez de `setState` dentro de efeito.
+- Os casts `as React.CSSProperties` foram removidos. Custom properties (`--x`) são tipadas em [src/css-properties.d.ts](src/css-properties.d.ts).
+
+Rodar `shadcn add --overwrite` num componente já existente descarta esses ajustes, então revise o diff antes de commitar.
+
+**Tema.** [src/styles.css](src/styles.css) mapeia a paleta do projeto para as variáveis do shadcn (`--primary`, `--muted-foreground`, `--sidebar-*`...) e acrescenta `--success`/`--warning`. O modo escuro segue `prefers-color-scheme`.
+
 ## Fluxo de dados
 
 ```text
@@ -92,8 +117,8 @@ No TanStack Query 5.104, `prefetchQuery` e `ensureQueryData` estão depreciados.
 
 ## Formulários
 
-- `ui/form.tsx`: primitives visuais (`FormField`, `FormLabel`, `FormDescription`, `FormError`) sobre `Field` do Base UI.
-- `pattern/form.tsx`: campos ligados ao TanStack Form (`TextField`, `NumberField`, `TextareaField`, `SelectField`, `RadioGroupField`, `CheckboxField`, `SubmitButton`, `FormErrorAlert`).
+- `ui/field.tsx` e `ui/label.tsx`: primitives visuais do shadcn (`Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldSet`).
+- `pattern/form.tsx`: campos ligados ao TanStack Form (`TextField`, `NumberField`, `TextareaField`, `SelectField`, `RadioGroupField`, `CheckboxField`, `SubmitButton`, `FormErrorAlert`). Um `FieldShell` interno liga label, controle, descrição e erro (`id`/`htmlFor`, `aria-invalid`, `aria-describedby`).
 - `pattern/form.hooks.ts`: `useAppForm`/`withForm` via `createFormHook`, `schemaValidation(schema)` e `createFormSubmitHandler(schema, onValid)`.
 
 Todo form nasce de um schema Valibot. Ele valida no submit e, depois do primeiro submit, a cada mudança (`revalidateLogic`). O `onValid` recebe o output já parseado (com trim e transformações). Um `FriendlyError` vindo da API volta para o form: `detail` vira erro de formulário e `fieldErrors` vira erro de campo.
@@ -135,6 +160,7 @@ O banco do mock, as stores e o `localStorage` são resetados após cada teste ([
 
 - **Lingui 5.9 em vez de 6**: o Lingui 6 exige Node ≥ 22.19, e a máquina de desenvolvimento roda 22.13. O macro roda via `@rolldown/plugin-babel`. Ao atualizar o Node, dá para migrar para o transform nativo do Lingui 6.
 - **TypeScript 6.0**: o typescript-eslint ainda não suporta o TS 7.
-- **`cva@1 beta`**: `defineConfig` expõe `cva` e `cx`. A composição usa a opção `composes` do próprio `cva`, que substituiu o antigo `compose`.
+- **Variantes com `class-variance-authority` e merge com `cn`**: é o padrão dos componentes do shadcn, então substituiu o `cva` beta + `tailwind-merge` e o antigo `ui/variants.ts`.
+- **Sem `motion`**: a única animação era a largura do sidebar, que agora vem do `Sidebar` do shadcn via CSS. Adicione o pacote de volta quando surgir uma animação que CSS não resolva.
 - **Sem `@testing-library/jest-dom`**: os matchers dele colidem com os tipos de `expect.element` do browser mode. `findBy*`/`getBy*` já falham quando o elemento não existe.
 - **Sem camada extra de componentes compartilhados** e sem `core/utils.ts`: nada genérico justificou a existência deles ainda.
