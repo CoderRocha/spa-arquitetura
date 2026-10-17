@@ -2,22 +2,22 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 type SidebarState = {
-  collapsed: boolean
-  toggle: () => void
+  open: boolean
+  setOpen: (open: boolean) => void
 }
 
 export const useSidebarStore = create<SidebarState>()(
   persist(
     (set) => ({
-      collapsed: false,
-      toggle: () => {
-        set((state) => ({ collapsed: !state.collapsed }))
+      open: true,
+      setOpen: (open) => {
+        set({ open })
       },
     }),
     {
       name: 'sidebar',
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ collapsed }) => ({ collapsed }),
+      partialize: ({ open }) => ({ open }),
     },
   ),
 )
