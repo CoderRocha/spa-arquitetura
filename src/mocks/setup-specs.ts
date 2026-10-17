@@ -13,6 +13,17 @@ Object.defineProperties(HTMLElement.prototype, {
   offsetHeight: { configurable: true, get: () => 800 },
   offsetWidth: { configurable: true, get: () => 1200 },
 })
+
+window.matchMedia = (query: string): MediaQueryList => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addListener: () => undefined,
+  removeListener: () => undefined,
+  addEventListener: () => undefined,
+  removeEventListener: () => undefined,
+  dispatchEvent: () => false,
+})
 await loadLocale('pt-BR')
 useConsentStore.getState().setConsent('denied')
 

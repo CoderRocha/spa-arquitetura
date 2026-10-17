@@ -3,16 +3,16 @@ import { render } from 'vitest-browser-react'
 import { Button } from '@ui/button'
 
 describe('Button', () => {
-  test('exposes variant, size and a safe default type', async () => {
+  test('exposes slot, variant and size as data attributes', async () => {
     const screen = await render(
-      <Button variant="danger" size="sm">
+      <Button variant="destructive" size="sm">
         Remover
       </Button>,
     )
     const button = screen.getByRole('button', { name: 'Remover' })
 
     await expect.element(button).toHaveAttribute('data-slot', 'button')
-    await expect.element(button).toHaveAttribute('data-variant', 'danger')
+    await expect.element(button).toHaveAttribute('data-variant', 'destructive')
     await expect.element(button).toHaveAttribute('data-size', 'sm')
     await expect.element(button).toHaveAttribute('type', 'button')
   })
@@ -21,7 +21,7 @@ describe('Button', () => {
     const screen = await render(<Button className="h-20">Alto</Button>)
 
     await expect.element(screen.getByRole('button', { name: 'Alto' })).toHaveClass('h-20')
-    await expect.element(screen.getByRole('button', { name: 'Alto' })).not.toHaveClass('h-10')
+    await expect.element(screen.getByRole('button', { name: 'Alto' })).not.toHaveClass('h-8')
   })
 
   test('calls onClick', async () => {
