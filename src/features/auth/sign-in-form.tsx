@@ -19,7 +19,7 @@ export const SignInForm = () => {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">{t`Entrar`}</h1>
-        <p className="text-sm text-muted">{t`Acesse sua conta para continuar.`}</p>
+        <p className="text-sm text-muted-foreground">{t`Acesse sua conta para continuar.`}</p>
       </div>
       <form
         noValidate
@@ -40,7 +40,7 @@ export const SignInForm = () => {
           <form.SubmitButton className="mt-2">{t`Entrar`}</form.SubmitButton>
         </form.AppForm>
       </form>
-      <p className="text-center text-sm text-muted">
+      <p className="text-center text-sm text-muted-foreground">
         <Trans>
           Ainda não tem conta?{' '}
           <Link to="/register" className="font-medium text-primary hover:underline">

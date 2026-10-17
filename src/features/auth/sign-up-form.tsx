@@ -19,7 +19,7 @@ export const SignUpForm = () => {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">{t`Criar conta`}</h1>
-        <p className="text-sm text-muted">{t`Leva menos de um minuto.`}</p>
+        <p className="text-sm text-muted-foreground">{t`Leva menos de um minuto.`}</p>
       </div>
       <form
         noValidate
@@ -53,7 +53,7 @@ export const SignUpForm = () => {
           <form.SubmitButton className="mt-2">{t`Criar conta`}</form.SubmitButton>
         </form.AppForm>
       </form>
-      <p className="text-center text-sm text-muted">
+      <p className="text-center text-sm text-muted-foreground">
         <Trans>
           Já tem conta?{' '}
           <Link to="/login" className="font-medium text-primary hover:underline">

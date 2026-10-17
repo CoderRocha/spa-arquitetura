@@ -12,7 +12,7 @@ const WelcomeRoute = () => {
         <h1 className="text-2xl font-semibold tracking-tight">
           <Trans>Boas-vindas!</Trans>
         </h1>
-        <p className="text-sm text-muted">
+        <p className="text-sm text-muted-foreground">
           <Trans>Conte um pouco sobre você para concluir o cadastro.</Trans>
         </p>
       </div>
