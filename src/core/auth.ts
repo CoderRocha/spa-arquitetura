@@ -1,20 +1,22 @@
-import { signIn, signOut, signUp, type SignInRequest, type SignUpRequest } from '@core/api/auth'
-import { refreshSessionIfNeeded } from '@core/http-resource'
+import type { SignInRequest, SignUpRequest } from '@contracts/auth'
+import { fetchSession, signIn, signOut, signUp } from '@core/api/auth'
 import { useSessionStore } from '@core/session-store'
 
 export const initializeAuth = async () => {
-  await refreshSessionIfNeeded()
-  const { tokens, setSession, clearSession } = useSessionStore.getState()
-  if (tokens) setSession(tokens)
+  const { setAuthenticated, clearSession } = useSessionStore.getState()
+  const session = await fetchSession().catch(() => null)
+  if (session) setAuthenticated()
   else clearSession()
 }
 
 export const signInWithPassword = async (input: SignInRequest) => {
-  useSessionStore.getState().setSession(await signIn(input))
+  await signIn(input)
+  useSessionStore.getState().setAuthenticated()
 }
 
 export const signUpWithPassword = async (input: SignUpRequest) => {
-  useSessionStore.getState().setSession(await signUp(input))
+  await signUp(input)
+  useSessionStore.getState().setAuthenticated()
 }
 
 export const signOutSession = async () => {

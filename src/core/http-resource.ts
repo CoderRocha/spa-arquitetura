@@ -1,8 +1,8 @@
 import { t } from '@lingui/core/macro'
 import * as v from 'valibot'
 import { useAppStore } from '@core/app-store'
-import { API_BASE_URL, TOKEN_REFRESH_MARGIN_MS } from '@core/constants'
-import { sessionTokensSchema, useSessionStore } from '@core/session-store'
+import { API_BASE_URL } from '@core/constants'
+import { useSessionStore } from '@core/session-store'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
@@ -53,7 +53,10 @@ const problemSchema = v.object({
 })
 
 const toFriendlyError = async (response: Response) => {
-  const fallback = { status: response.status, title: t`Algo deu errado`, detail: t`Tente novamente em instantes.` }
+  const fallback =
+    response.status === 429
+      ? { status: 429, title: t`Muitas tentativas`, detail: t`Aguarde um pouco e tente novamente.` }
+      : { status: response.status, title: t`Algo deu errado`, detail: t`Tente novamente em instantes.` }
   if (!response.headers.get('Content-Type')?.includes('application/problem+json')) return createFriendlyError(fallback)
   const problem = v.safeParse(problemSchema, await response.json().catch(() => null))
   if (!problem.success) return createFriendlyError(fallback)
@@ -71,12 +74,11 @@ type RequestOptions<TSchema> = {
   schema: TSchema
   query?: Query
   signal?: AbortSignal
-  auth?: boolean
 }
 
 const request = async <TSchema extends v.GenericSchema>(
   route: ApiRoute,
-  { schema, query, signal, auth = true }: RequestOptions<TSchema>,
+  { schema, query, signal }: RequestOptions<TSchema>,
   body?: BodyInit,
   contentType?: string,
 ): Promise<v.InferOutput<TSchema>> => {
@@ -85,11 +87,6 @@ const request = async <TSchema extends v.GenericSchema>(
     'Accept-Language': useAppStore.getState().locale,
   })
   if (contentType) headers.set('Content-Type', contentType)
-  if (auth) {
-    await refreshSessionIfNeeded()
-    const token = useSessionStore.getState().tokens?.accessToken
-    if (token) headers.set('Authorization', `Bearer ${token}`)
-  }
 
   const url = apiUrl(route.path)
   for (const [key, value] of Object.entries(query ?? {})) {
@@ -98,14 +95,20 @@ const request = async <TSchema extends v.GenericSchema>(
 
   let response: Response
   try {
-    response = await fetch(url, { method: route.method, headers, body: body ?? null, signal: signal ?? null })
+    response = await fetch(url, {
+      method: route.method,
+      headers,
+      body: body ?? null,
+      signal: signal ?? null,
+      credentials: 'include',
+    })
   } catch (error) {
     if (signal?.aborted) throw error
     throw createFriendlyError({ status: 0, title: t`Sem conexão`, detail: t`Verifique sua internet e tente novamente.` })
   }
 
   if (!response.ok) {
-    if (response.status === 401 && auth) useSessionStore.getState().clearSession()
+    if (response.status === 401) useSessionStore.getState().clearSession()
     throw await toFriendlyError(response)
   }
 
@@ -129,24 +132,3 @@ export const httpUpload = <TSchema extends v.GenericSchema>(
   route: ApiRoute,
   { formData, ...options }: RequestOptions<TSchema> & { formData: FormData },
 ) => request(route, options, formData)
-
-export const refreshRoute = defineApiRoute('POST', '/auth/refresh')
-
-let refreshing: Promise<void> | null = null
-
-export const refreshSessionIfNeeded = (): Promise<void> => {
-  const { tokens } = useSessionStore.getState()
-  if (!tokens || tokens.expiresAt - Date.now() > TOKEN_REFRESH_MARGIN_MS) return Promise.resolve()
-  refreshing ??= httpResource(refreshRoute, {
-    schema: sessionTokensSchema,
-    body: { refreshToken: tokens.refreshToken },
-    auth: false,
-  })
-    .then(useSessionStore.getState().setSession, (error: unknown) => {
-      if (isFriendlyError(error) && error.status > 0) useSessionStore.getState().clearSession()
-    })
-    .finally(() => {
-      refreshing = null
-    })
-  return refreshing
-}

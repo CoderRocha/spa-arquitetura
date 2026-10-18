@@ -17,11 +17,11 @@ msgstr ""
 msgid "{total, plural, one {# registro} other {# registros}}"
 msgstr "{total, plural, one {# registro} other {# registros}}"
 
-#: src/features/profile/schemas.ts:15
+#: src/features/profile/schemas.ts:16
 msgid "A imagem precisa ter no máximo 2 MB."
 msgstr "A imagem precisa ter no máximo 2 MB."
 
-#: src/core/schemas.ts:28
+#: src/core/schemas.ts:29
 msgid "A senha precisa ter pelo menos 8 caracteres."
 msgstr "A senha precisa ter pelo menos 8 caracteres."
 
@@ -37,11 +37,15 @@ msgstr "Aceito os termos de uso"
 msgid "Acesse sua conta para continuar."
 msgstr "Acesse sua conta para continuar."
 
+#: src/core/http-resource.ts:58
+msgid "Aguarde um pouco e tente novamente."
+msgstr "Aguarde um pouco e tente novamente."
+
 #: src/features/auth/sign-in-form.tsx:44
 msgid "Ainda não tem conta? <0>Criar conta</0>"
 msgstr "Ainda não tem conta? <0>Criar conta</0>"
 
-#: src/core/http-resource.ts:56
+#: src/core/http-resource.ts:59
 #: src/pattern/widget-boundary.tsx:24
 msgid "Algo deu errado"
 msgstr "Algo deu errado"
@@ -94,7 +98,7 @@ msgstr "Buscar por nome"
 msgid "Cadastre itens e acompanhe tudo por aqui."
 msgstr "Cadastre itens e acompanhe tudo por aqui."
 
-#: src/core/schemas.ts:8
+#: src/core/schemas.ts:9
 msgid "Campo obrigatório."
 msgstr "Campo obrigatório."
 
@@ -145,7 +149,7 @@ msgstr "Descrição"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/core/schemas.ts:23
+#: src/core/schemas.ts:24
 msgid "E-mail inválido."
 msgstr "E-mail inválido."
 
@@ -197,7 +201,7 @@ msgstr "Foto atualizada"
 msgid "Idioma"
 msgstr "Idioma"
 
-#: src/core/schemas.ts:22
+#: src/core/schemas.ts:23
 msgid "Informe seu e-mail."
 msgstr "Informe seu e-mail."
 
@@ -205,7 +209,7 @@ msgstr "Informe seu e-mail."
 msgid "Informe sua senha."
 msgstr "Informe sua senha."
 
-#: src/features/items/schemas.ts:26
+#: src/features/items/schemas.ts:33
 msgid "Informe um número."
 msgstr "Informe um número."
 
@@ -248,6 +252,10 @@ msgstr "Menu da conta"
 msgid "Mínimo de 8 caracteres."
 msgstr "Mínimo de 8 caracteres."
 
+#: src/core/http-resource.ts:58
+msgid "Muitas tentativas"
+msgstr "Muitas tentativas"
+
 #: src/pattern/widget-boundary.tsx:25
 msgid "Não foi possível carregar este conteúdo."
 msgstr "Não foi possível carregar este conteúdo."
@@ -289,7 +297,7 @@ msgstr "Novo item"
 msgid "O endereço acessado não existe ou foi movido."
 msgstr "O endereço acessado não existe ou foi movido."
 
-#: src/features/items/schemas.ts:28
+#: src/features/items/schemas.ts:35
 msgid "O valor mínimo é 0."
 msgstr "O valor mínimo é 0."
 
@@ -359,7 +367,7 @@ msgstr "Rascunhos"
 msgid "Recusar"
 msgstr "Recusar"
 
-#: src/core/http-resource.ts:115
+#: src/core/http-resource.ts:118
 msgid "Resposta inesperada do servidor"
 msgstr "Resposta inesperada do servidor"
 
@@ -379,11 +387,11 @@ msgstr "Salvar alterações"
 msgid "Salvar preferências"
 msgstr "Salvar preferências"
 
-#: src/features/items/schemas.ts:24
+#: src/features/items/schemas.ts:31
 msgid "Selecione um status."
 msgstr "Selecione um status."
 
-#: src/core/http-resource.ts:104
+#: src/core/http-resource.ts:107
 msgid "Sem conexão"
 msgstr "Sem conexão"
 
@@ -409,7 +417,7 @@ msgstr "Taxa de ativos"
 msgid "Tentar novamente"
 msgstr "Tentar novamente"
 
-#: src/core/http-resource.ts:56
+#: src/core/http-resource.ts:59
 msgid "Tente novamente em instantes."
 msgstr "Tente novamente em instantes."
 
@@ -433,16 +441,20 @@ msgstr "Uma base sólida para construir a sua próxima aplicação."
 msgid "Usamos cookies para entender como a aplicação é usada. Você aceita?"
 msgstr "Usamos cookies para entender como a aplicação é usada. Você aceita?"
 
-#: src/core/schemas.ts:9
-#: src/core/schemas.ts:16
+#: src/core/schemas.ts:10
+#: src/core/schemas.ts:17
 msgid "Use no máximo {max} caracteres."
 msgstr "Use no máximo {max} caracteres."
 
-#: src/features/items/schemas.ts:27
+#: src/core/schemas.ts:30
+msgid "Use no máximo {PASSWORD_MAX} caracteres."
+msgstr "Use no máximo {PASSWORD_MAX} caracteres."
+
+#: src/features/items/schemas.ts:34
 msgid "Use um número inteiro."
 msgstr "Use um número inteiro."
 
-#: src/features/profile/schemas.ts:14
+#: src/features/profile/schemas.ts:15
 msgid "Use uma imagem PNG, JPG ou WebP."
 msgstr "Use uma imagem PNG, JPG ou WebP."
 
@@ -450,7 +462,7 @@ msgstr "Use uma imagem PNG, JPG ou WebP."
 msgid "Ver itens"
 msgstr "Ver itens"
 
-#: src/core/http-resource.ts:104
+#: src/core/http-resource.ts:107
 msgid "Verifique sua internet e tente novamente."
 msgstr "Verifique sua internet e tente novamente."
 

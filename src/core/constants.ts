@@ -8,6 +8,4 @@ export type Locale = (typeof LOCALES)[number]
 
 export const DEFAULT_LOCALE: Locale = 'pt-BR'
 
-export const TOKEN_REFRESH_MARGIN_MS = 30_000
-
 export const DEFAULT_PAGE_SIZE = 20

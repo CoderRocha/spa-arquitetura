@@ -1,5 +1,5 @@
 import { createContext, use } from 'react'
-import type { SignInRequest, SignUpRequest } from '@core/api/auth'
+import type { SignInRequest, SignUpRequest } from '@contracts/auth'
 import type { SessionStatus } from '@core/session-store'
 
 export type AuthContextValue = {
