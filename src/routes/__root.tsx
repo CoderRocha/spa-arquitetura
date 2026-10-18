@@ -37,7 +37,7 @@ const RootComponent = () => {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  head: () => ({ meta: [{ title: 'Workspace' }] }),
+  head: () => ({ meta: [{ title: 'Boilerplate SPA' }] }),
   component: RootComponent,
   notFoundComponent: NotFoundPage,
   errorComponent: ErrorFallback,

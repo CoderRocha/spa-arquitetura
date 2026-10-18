@@ -74,9 +74,9 @@ export const MainLayout = ({
         <SidebarHeader>
           <div className="flex h-8 items-center gap-2 px-1 font-semibold tracking-tight">
             <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary text-xs text-primary-foreground">
-              W
+              B
             </span>
-            <span className="truncate group-data-[collapsible=icon]:hidden">Workspace</span>
+            <span className="truncate group-data-[collapsible=icon]:hidden">Boilerplate SPA</span>
           </div>
         </SidebarHeader>
         <SidebarContent>

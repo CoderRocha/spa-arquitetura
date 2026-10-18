@@ -11,7 +11,7 @@ export const AuthLayout = ({ appVersion, children }: AuthLayoutProps) => {
   return (
     <div className="grid min-h-svh lg:grid-cols-[1fr_1.1fr]">
       <aside className="hidden flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-        <span className="text-lg font-semibold tracking-tight">Workspace</span>
+        <span className="text-lg font-semibold tracking-tight">Boilerplate SPA</span>
         <p className="max-w-sm text-3xl leading-tight font-medium text-balance">
           {t`Uma base sólida para construir a sua próxima aplicação.`}
         </p>
