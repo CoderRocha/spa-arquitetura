@@ -1,4 +1,4 @@
-# Workspace SPA
+# Boilerplate SPA
 
 Base de SPA em React com camadas bem separadas e regras de dependência checadas no lint. O domínio (`items`, `profile`, `dashboard`, `settings`) é genérico, só para ter algo real rodando em cima da estrutura.
 
@@ -103,8 +103,6 @@ Estado fica assim:
 - **Estado global pequeno:** Zustand (sessão, idioma, sidebar, consentimento de cookies).
 - **Estado local:** `useState`.
 
-Nada de `useEffect` para buscar dados, disparar mutation ou calcular estado derivado.
-
 ## Formulários
 
 Os campos prontos (`TextField`, `SelectField`, `CheckboxField` etc.) ficam em `pattern/form.tsx` e usam os componentes `Field` do shadcn. O hook `useAppForm` sai de `pattern/form.hooks.ts`.
@@ -127,8 +125,6 @@ Ele já cai em `src/ui/`. Alguns componentes gerados foram ajustados à mão:
 - `Badge` ganhou as variantes `success` e `warning`;
 - o `Sidebar` não grava cookie, porque o estado dele fica na `sidebar-store`;
 - o `Toaster` segue o tema do sistema, sem `next-themes`.
-
-Cuidado com `shadcn add --overwrite` em componente que já existe: ele desfaz esses ajustes.
 
 As cores ficam em [src/styles.css](src/styles.css). O modo escuro segue o sistema operacional. No mobile, o menu lateral vira gaveta abaixo de 768px.
 
@@ -185,22 +181,4 @@ Os erros do Better Auth são convertidos para `problem+json`, no idioma do usuá
 
 Os contadores ficam no banco, então valem mesmo com mais de uma instância da API. Passou do limite, a API responde 429 com `Retry-After`.
 
-O IP vem da conexão. O header `x-forwarded-for` só é usado com `TRUST_PROXY=true`; sem isso, daria para burlar o limite mandando um IP falso.
-
-### Pendências
-
-Os pontos marcados com `ponytail:` no código precisam de atenção antes de produção:
-
-- o avatar é salvo no disco do servidor (trocar por S3 ou R2);
-- a limpeza da tabela de rate limit é feita aos poucos, durante as requisições (trocar por um job agendado se o tráfego crescer).
-
-### Se um dia trocar para Supabase
-
-Drizzle e Better Auth também funcionam com Postgres. A troca fica toda em `server/db` (schema, adapter e config do drizzle-kit), sem mexer no front.
-
-## Decisões e limitações
-
-- **Lingui 5.9:** o 6 pede Node 22.19 ou mais novo. Dá para atualizar quando o Node for atualizado.
-- **TypeScript 6.0:** o typescript-eslint ainda não suporta o 7.
-- **Sem `@testing-library/jest-dom`:** ele conflita com os tipos dos testes de browser do Vitest. Os `findBy`/`getBy` já falham quando o elemento não existe.
-- **Não rode `npm audit fix --force`:** ele rebaixa o `eslint-plugin-boundaries` e o Lingui para versões que quebram o lint e a extração de textos.
+O IP vem da conexão. O header `x-forwarded-for` só é usado com `TRUST_PROXY=true`.
