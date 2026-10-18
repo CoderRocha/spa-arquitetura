@@ -1,55 +1,72 @@
 # Workspace SPA
 
-Blueprint de single page application com camadas explícitas, limites de dependência verificados por lint e um domínio neutro (`items`, `profile`, `dashboard`, `settings`) usado apenas para provar que a arquitetura funciona.
+Base de SPA em React com camadas bem separadas e regras de dependência checadas no lint. O domínio (`items`, `profile`, `dashboard`, `settings`) é genérico, só para ter algo real rodando em cima da estrutura.
+
+## Como rodar
+
+Sem backend, com a API mockada pelo MSW:
+
+```bash
+npm install
+npm run dev:mock
+```
+
+Com a API de verdade (Turso + Better Auth), depois de configurar o `.env` (veja [Backend](#backend)):
+
+```bash
+npm run dev
+```
+
+O `dev` sobe o front (Vite) e a API juntos. Se quiser rodar separado, use `dev:web` e `dev:api`.
+
+Login de teste nos dois casos: `demo@example.com` / `password123`.
 
 ## Stack
 
-React 19, TypeScript estrito, Vite 8, TanStack Router (file-based, code splitting automático), TanStack Query, TanStack Form, TanStack Table 9 + Virtual, Zustand, Valibot, Tailwind CSS 4, shadcn/ui (estilo `base-nova`, sobre Base UI) com class-variance-authority, `cn`, lucide-react e Sonner, Lingui, MSW, Vitest (jsdom + browser mode com Playwright), ESLint com `eslint-plugin-boundaries` e oxlint.
-
-Backend: Hono + Drizzle sobre Turso (libSQL) e Better Auth, em `server/`.
+- **Front:** React 19, TypeScript, Vite 8, TanStack Router/Query/Form/Table/Virtual, Zustand, Valibot, Tailwind 4, shadcn/ui (base-nova), Lingui.
+- **Back:** Hono, Drizzle, Turso (libSQL), Better Auth.
+- **Testes e qualidade:** Vitest (jsdom, browser mode com Playwright e Node), MSW, ESLint com `eslint-plugin-boundaries`, oxlint.
 
 ## Scripts
 
 | Script | O que faz |
 | --- | --- |
-| `npm run dev` | Dev server do SPA com proxy de `/api` para `http://localhost:8787` (rode junto com `dev:api`) |
-| `npm run dev:api` | API (Hono) em watch, lendo `.env` se existir |
-| `npm run dev:mock` | Dev server com MSW interceptando a API (login: `demo@example.com` / `password123`) |
-| `npm run build` | Build de produção + `tsc` do SPA e do servidor |
-| `npm run build:stats` | Build com `dist/stats.html` (rollup-plugin-visualizer) |
-| `npm run lint` | `oxlint` e depois `eslint` (tipos + boundaries) |
-| `npm run typecheck` | `tsc` do SPA e do servidor |
-| `npm run db:generate` | Gera migração a partir de `server/db/*.ts` (drizzle-kit) |
-| `npm run db:migrate` | Aplica as migrações no banco de `TURSO_DATABASE_URL` |
-| `npm run db:seed` | Roda `server/db/sql/seed.sql` no banco de `TURSO_DATABASE_URL` |
-| `npm run auth:generate` | Regera `server/db/auth-schema.ts` a partir da config do Better Auth |
-| `npm run i18n:extract` | Extrai mensagens para `src/core/locales/*.po` |
-| `npm test` | Todos os projetos de teste |
-| `npm run test:unit` / `test:integration` / `test:browser` / `test:server` | Um projeto por vez |
+| `dev` | Front + API juntos |
+| `dev:web` | Só o front, com proxy de `/api` para `localhost:8787` |
+| `dev:api` | Só a API, em watch, lendo o `.env` |
+| `dev:mock` | Só o front, com a API mockada pelo MSW |
+| `build` | Build de produção e typecheck do front e da API |
+| `build:stats` | Build com relatório de bundle em `dist/stats.html` |
+| `lint` | oxlint e ESLint |
+| `typecheck` | `tsc` do front e da API |
+| `test` | Todos os testes |
+| `test:unit`, `test:integration`, `test:browser`, `test:server` | Um grupo de testes por vez |
+| `db:generate` | Gera migração a partir de `server/db/*.ts` |
+| `db:migrate` | Aplica as migrações no banco do `.env` |
+| `db:seed` | Roda o `server/db/sql/seed.sql` no banco do `.env` |
+| `auth:generate` | Regera as tabelas do Better Auth (`server/db/auth-schema.ts`) |
+| `i18n:extract` | Atualiza os catálogos de tradução |
 
-Antes do primeiro `test:browser`: `npx playwright install chromium`.
+Antes do primeiro `test:browser`, instale o Chromium: `npx playwright install chromium`.
 
-## Camadas
+## Estrutura
 
 ```text
 src/
-  contracts/ schemas Valibot puros (respostas, inputs, limites), compartilhados entre SPA e servidor
-  core/      fundação técnica: cliente HTTP, APIs, query keys/options, stores, auth, i18n, schemas transversais
-  ui/        design system: componentes shadcn/ui (base-nova, sobre Base UI), sem domínio e sem texto fixo
-  pattern/   composições compartilhadas: infraestrutura de form, data grid, boundaries, diálogos de erro
-  layouts/   shells visuais puros, recebem tudo por props
-  features/  módulos autocontidos por feature (componentes, hooks, schemas)
-  routes/    rotas finas: guard, prefetch, URL state e composição
-  mocks/     MSW (handlers, banco em memória, setup de testes)
-  main.tsx, router.ts, query-client.ts   composição da aplicação
-server/      API Hono + Drizzle (Turso/libSQL) + Better Auth
+  contracts/   schemas Valibot compartilhados entre front e API
+  core/        cliente HTTP, chamadas de API, queries, stores, auth, i18n
+  ui/          componentes do shadcn/ui, sem regra de negócio e sem texto fixo
+  pattern/     peças reaproveitáveis: forms, data grid, boundaries de erro
+  layouts/     estrutura das telas, recebe tudo por props
+  features/    cada feature com seus componentes, hooks e schemas
+  routes/      rotas finas: guard, prefetch, estado na URL e composição
+  mocks/       MSW e setup dos testes
+server/        API (Hono + Drizzle + Turso + Better Auth)
 ```
 
-### Matriz de dependências
+### Quem pode importar de quem
 
-Verificada por `boundaries/dependencies` em [eslint.config.js](eslint.config.js). Qualquer import fora da matriz quebra o lint.
-
-| Camada | Pode importar de |
+| Camada | Importa de |
 | --- | --- |
 | `contracts` | `contracts` |
 | `core` | `core`, `mocks`, `contracts` |
@@ -59,171 +76,131 @@ Verificada por `boundaries/dependencies` em [eslint.config.js](eslint.config.js)
 | `features` | `core`, `ui`, `pattern`, `features`, `contracts` |
 | `routes` | `core`, `ui`, `pattern`, `layouts`, `features` |
 | `mocks` | `core`, `mocks`, `features`, `contracts` |
-| app (`src/*.ts[x]`) | tudo |
+| `src/*.ts(x)` | tudo |
 | `server` | `server`, `contracts` |
 
-Pacotes externos não entram na matriz. Arquivos em `__specs__/` ficam fora dela porque testes compõem a aplicação inteira.
+Pacotes do npm ficam fora dessa regra, e os testes (`__specs__/`) também.
 
-## Convenções (todas verificadas por lint)
+## Convenções
 
-- Sem barrel exports (`export *` e re-exports são bloqueados).
-- Sem classes. Erros tipados são objetos criados por função (`createFriendlyError` + `isFriendlyError`).
-- `type` em vez de `interface`. A única exceção é module augmentation (`Register` do Router e do Query, `ImportMetaEnv`), que exige interface.
-- Imports entre módulos sempre por alias (`@core/*`, `@ui/*`, `@pattern/*`, `@features/*`, `@layouts/*`, `@routes/*`, `@mocks/*`, `@/*`). `../` é bloqueado.
-- Sem type assertions (`as`), exceto `as const`. Tipos são ajustados na origem, em geral inferidos de schemas Valibot.
-- `fetch` só existe em [src/core/http-resource.ts](src/core/http-resource.ts).
+- Sem barrel files (`export *` ou re-export).
+- Sem classes. Erros tipados são objetos (`createFriendlyError` / `isFriendlyError`).
+- `type` em vez de `interface`, exceto em module augmentation, onde o TypeScript exige interface.
+- Imports por alias (`@core/...`, `@ui/...` etc.). `../` não passa.
+- Sem `as` para forçar tipo (só `as const`).
+- `fetch` só aparece em [src/core/http-resource.ts](src/core/http-resource.ts).
 
-## UI (shadcn/ui)
+## Dados
 
-Os componentes de `src/ui/` vêm do shadcn/ui no estilo `base-nova`, que usa `@base-ui/react` como primitivo. A composição é feita pela prop `render` (por exemplo `<DropdownMenuItem render={<Link to="/settings" />}>`), não por `asChild`. A configuração fica em [components.json](components.json).
+Cada recurso tem o schema em `contracts/`, as chamadas em `core/api/`, as query keys em `core/keys.ts` e as `queryOptions` em `core/queries.ts`. As rotas fazem o prefetch no `loader` com `queryClient.query(...)`, e as features usam `useQuery` / `useSuspenseQuery` com as mesmas options.
+
+O `httpResource` manda `Accept-Language` e o cookie de sessão, valida a resposta com o schema e transforma erros (`problem+json`, falha de rede, resposta fora do contrato) em `FriendlyError`.
+
+Estado fica assim:
+
+- **Dados do servidor:** TanStack Query.
+- **Filtros, ordenação, paginação e aba ativa:** na URL (`validateSearch`).
+- **Estado global pequeno:** Zustand (sessão, idioma, sidebar, consentimento de cookies).
+- **Estado local:** `useState`.
+
+Nada de `useEffect` para buscar dados, disparar mutation ou calcular estado derivado.
+
+## Formulários
+
+Os campos prontos (`TextField`, `SelectField`, `CheckboxField` etc.) ficam em `pattern/form.tsx` e usam os componentes `Field` do shadcn. O hook `useAppForm` sai de `pattern/form.hooks.ts`.
+
+Todo form parte de um schema Valibot. A validação roda no submit e, depois disso, a cada alteração. Se a API devolver erro, a mensagem geral aparece no topo do form e os erros por campo aparecem em cada campo.
+
+## UI
+
+Os componentes vêm do shadcn/ui no estilo `base-nova`, que usa o Base UI por baixo. Composição é pela prop `render` (ex.: `<DropdownMenuItem render={<Link to="/settings" />}>`).
+
+Para adicionar um componente:
 
 ```bash
 npx shadcn@latest add <componente>
 ```
 
-A CLI grava direto em `src/ui/` porque o `tsconfig.json` mapeia o alias `@ui` (além de `@ui/*`). Os componentes importam `cn` do pacote `cn` e ícones de `lucide-react`.
+Ele já cai em `src/ui/`. Alguns componentes gerados foram ajustados à mão:
 
-**Mobile first.** O `Sidebar` vira um `Sheet` (gaveta) abaixo de 768px (`useIsMobile`). Dialogs, AlertDialogs e inputs já vêm responsivos (largura `calc(100%-2rem)`, rodapés empilhados, `text-base` no mobile para evitar zoom no iOS). Os layouts só usam breakpoints `sm:`/`lg:` para refinar a partir do mobile.
+- textos fixos em inglês viraram props (`closeLabel`, `label`, `aria-label`), para funcionar com i18n;
+- `Badge` ganhou as variantes `success` e `warning`;
+- o `Sidebar` não grava cookie, porque o estado dele fica na `sidebar-store`;
+- o `Toaster` segue o tema do sistema, sem `next-themes`.
 
-**Ajustes locais nos componentes gerados.** O shadcn entrega código aberto, e estes ajustes fazem parte do projeto:
+Cuidado com `shadcn add --overwrite` em componente que já existe: ele desfaz esses ajustes.
 
-- Textos fixos em inglês viraram props, para manter `ui/` sem texto e com i18n: `closeLabel` em `DialogContent`/`DialogFooter`/`SheetContent`, `label` em `Sidebar`/`SidebarTrigger`/`SidebarRail` e `aria-label` obrigatório no `Spinner`.
-- `Button` expõe `data-variant` e `data-size`. `Badge` ganhou as variantes `success` e `warning`.
-- O `Sidebar` não grava cookie, porque o estado aberto/fechado é persistido pela `sidebar-store`.
-- O `Toaster` (Sonner) segue o tema do sistema, sem `next-themes`.
-- `useIsMobile` usa `useSyncExternalStore` em vez de `setState` dentro de efeito.
-- Os casts `as React.CSSProperties` foram removidos. Custom properties (`--x`) são tipadas em [src/css-properties.d.ts](src/css-properties.d.ts).
-
-Rodar `shadcn add --overwrite` num componente já existente descarta esses ajustes, então revise o diff antes de commitar.
-
-**Tema.** [src/styles.css](src/styles.css) mapeia a paleta do projeto para as variáveis do shadcn (`--primary`, `--muted-foreground`, `--sidebar-*`...) e acrescenta `--success`/`--warning`. O modo escuro segue `prefers-color-scheme`.
-
-## Fluxo de dados
-
-```text
-core/api/<recurso>.ts   schema Valibot + tipos + rotas (defineApiRoute/defineApiRouteFn) + fetchX/createX/...
-        │  httpResource / httpUpload
-core/keys.ts            query-key-factory, um registry por domínio técnico
-core/queries.ts         queryOptions: queryKey, queryFn, select, staleTime, gcTime, placeholderData
-        │
-routes  loader/beforeLoad → queryClient.query(xQuery())
-features                → useQuery / useSuspenseQuery(xQuery()), useMutation + invalidação via keys
-```
-
-O `httpResource` adiciona `Accept-Language` (locale da app store), envia o cookie de sessão (`credentials: 'include'`), converte `application/problem+json` em `FriendlyError` com `fieldErrors`, normaliza falha de rede (status 0) e valida a resposta contra o schema do recurso. Resposta fora do contrato também vira `FriendlyError`.
-
-No TanStack Query 5.104, `prefetchQuery` e `ensureQueryData` estão depreciados. As rotas usam `queryClient.query(options)`, e `.catch(() => undefined)` quando o erro deve ficar com o boundary do widget.
-
-## Estado
-
-| Tipo | Onde |
-| --- | --- |
-| Server state | TanStack Query |
-| URL state | `validateSearch` com schema Valibot + `stripSearchParams` para manter a URL limpa |
-| Global pequeno | Zustand: `session-store`, `app-store` (locale, persistida), `sidebar-store` (UI persistida), `cookies/consent-store` |
-| Local | `useState` |
-| Compound components | Context (forms via `createFormHookContexts`, data grid via `createTableHookContexts`) |
-
-`useEffect` não é usado para fetch, mutation ou estado derivado. Os únicos efeitos sincronizam sistemas externos: a assinatura da session store que invalida o router, e o timer do debounce.
-
-## Formulários
-
-- `ui/field.tsx` e `ui/label.tsx`: primitives visuais do shadcn (`Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldSet`).
-- `pattern/form.tsx`: campos ligados ao TanStack Form (`TextField`, `NumberField`, `TextareaField`, `SelectField`, `RadioGroupField`, `CheckboxField`, `SubmitButton`, `FormErrorAlert`). Um `FieldShell` interno liga label, controle, descrição e erro (`id`/`htmlFor`, `aria-invalid`, `aria-describedby`).
-- `pattern/form.hooks.ts`: `useAppForm`/`withForm` via `createFormHook`, `schemaValidation(schema)` e `createFormSubmitHandler(schema, onValid)`.
-
-Todo form nasce de um schema Valibot. Ele valida no submit e, depois do primeiro submit, a cada mudança (`revalidateLogic`). O `onValid` recebe o output já parseado (com trim e transformações). Um `FriendlyError` vindo da API volta para o form: `detail` vira erro de formulário e `fieldErrors` vira erro de campo.
+As cores ficam em [src/styles.css](src/styles.css). O modo escuro segue o sistema operacional. No mobile, o menu lateral vira gaveta abaixo de 768px.
 
 ## Rotas
 
-- Grupos sem path: `_auth` (login, registro), `_main` (área autenticada), `_onboarding`.
-- Guards em `beforeLoad` leem a session store. O `AuthProvider` chama `router.invalidate()` quando o status da sessão muda, então login, logout e 401 redirecionam pelos próprios guards, sem `core` conhecer paths de rota.
-- O redirect pós-login é validado (`safeRedirectSchema`) para evitar open redirect.
-- `__root.tsx` monta `AuthProvider`, `HeadContent`, `TooltipProvider`, `Outlet`, banner de cookies, `Toaster`, devtools (apenas em dev) e `notFoundComponent`.
+- `_auth` agrupa login e cadastro, `_main` a área logada e `_onboarding` a tela de boas-vindas.
+- Os guards (`beforeLoad`) olham a `session-store`. Quando a sessão muda, o `AuthProvider` invalida o router e os guards fazem o redirect.
+- O `redirect` depois do login é validado, para não virar open redirect.
 
 ## i18n
 
-Lingui com origem `pt-BR` e tradução `en` em `src/core/locales`. O locale vem da app store persistida e é carregado antes do render. `changeLocale` troca o catálogo e invalida as queries (o `Accept-Language` muda). Para adicionar textos, use `t`/`Trans` dos macros e rode `npm run i18n:extract`.
-
-## Bootstrap
-
-[src/main.tsx](src/main.tsx): MSW (se `--mode mock`) → `initializeAuth` → `initializeI18n` → query client + router → tracking de rota fora do React (respeita o consentimento de cookies) → render com `StrictMode` > `I18nProvider` > `QueryClientProvider` > `RouterProvider`.
+Lingui, com pt-BR como idioma base e tradução para inglês em `src/core/locales`. Depois de adicionar textos com `t` ou `Trans`, rode `npm run i18n:extract` e traduza o que faltar no `en.po`.
 
 ## Testes
 
-| Projeto | Onde | Ambiente |
+| Grupo | Onde | Como roda |
 | --- | --- | --- |
-| `unit` | `src/{core,pattern,features}/**/__specs__` | jsdom + MSW node |
-| `integration` | `src/routes/__specs__` | jsdom + MSW node + router com memory history |
-| `browser` | `src/ui/__specs__` | Chromium headless via Playwright, com o CSS da aplicação |
-| `server` | `server/__specs__` | Node, libSQL em memória com a migração e o `seed.sql` reais |
+| `unit` | `src/{core,pattern,features}/**/__specs__` | jsdom + MSW |
+| `integration` | `src/routes/__specs__` | jsdom + MSW + router em memória |
+| `browser` | `src/ui/__specs__` | Chromium headless |
+| `server` | `server/__specs__` | Node, com banco em memória, migração e seed reais |
 
-O banco do mock, as stores e o `localStorage` são resetados após cada teste ([src/mocks/setup-specs.ts](src/mocks/setup-specs.ts)).
+## Backend
 
-## Backend (Turso + Better Auth)
+O front fala com a API pelo mesmo contrato que o MSW simula. Em dev, o Vite repassa `/api` para a API, então o cookie de sessão funciona sem configurar CORS.
 
-O SPA fala com a API pelo mesmo contrato REST que o MSW simula (`problem+json` nos erros). Em desenvolvimento o Vite faz proxy de `/api` para a API, então tudo roda na mesma origem e o cookie de sessão funciona sem CORS.
-
-```text
-server/
-  env.ts               variáveis validadas com Valibot
-  auth.ts              Better Auth (e-mail/senha, campos bio/onboarded, rate limit)
-  app.ts               Hono: CORS, locale, IP do cliente, rotas
-  db/auth-schema.ts    tabelas do Better Auth (geradas por `npm run auth:generate`)
-  db/schema.ts         tabelas item e api_rate_limit
-  db/migrations/       SQL gerado pelo drizzle-kit
-  db/sql/seed.sql      usuário demo + 64 itens (os mesmos dados do mock)
-  http/                problem+json, sessão, rate limit, IP, mensagens pt-BR/en
-  routes/              items, profile (com upload de avatar), metrics
-```
-
-### Preparando o banco no Turso
+### Configurando o Turso
 
 1. Crie o banco no painel do Turso e gere um token.
-2. Copie `.env.example` para `.env` e preencha `TURSO_DATABASE_URL` (`libsql://...`), `TURSO_AUTH_TOKEN` e `BETTER_AUTH_SECRET` (32+ caracteres, por exemplo `openssl rand -base64 32`).
-3. Crie as tabelas: cole [server/db/migrations/0000_init.sql](server/db/migrations/0000_init.sql) no SQL console do Turso, ou rode `npm run db:migrate`.
-4. Popule com dados de teste: cole [server/db/sql/seed.sql](server/db/sql/seed.sql) no console, ou rode `npm run db:seed`. O script pode ser rodado de novo sem duplicar nada.
-5. `npm run dev:api` em um terminal e `npm run dev` em outro. Login: `demo@example.com` / `password123`.
+2. Copie o `.env.example` para `.env` e preencha `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` e `BETTER_AUTH_SECRET`. O secret é uma string aleatória de 32 caracteres ou mais, que você gera assim:
 
-Para desenvolver sem conta no Turso, deixe `TURSO_DATABASE_URL=file:local.db` e rode os passos 3 e 4 pelos scripts.
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+   ```
 
-O Better Auth guarda a senha na tabela `account`, numa linha com `provider_id = 'credential'`, e não em `user`. Por isso o seed insere as duas linhas. O hash do seed foi gerado com `hashPassword` de `better-auth/crypto`.
+3. Crie as tabelas: `npm run db:migrate`, ou cole o [0000_init.sql](server/db/migrations/0000_init.sql) no console do Turso.
+4. Coloque os dados de teste: `npm run db:seed`, ou cole o [seed.sql](server/db/sql/seed.sql) no console. Pode rodar mais de uma vez sem duplicar.
+5. `npm run dev`.
 
-### Sessão e erros
+Para usar um banco local sem conta no Turso, deixe `TURSO_DATABASE_URL=file:local.db` e rode os passos 3 e 4 pelos scripts.
 
-- A sessão é um cookie `httpOnly` do Better Auth. O SPA não guarda token: a `session-store` só reflete o status (`authenticated`/`anonymous`), e qualquer 401 da API encerra a sessão no cliente.
-- Erros do Better Auth (`{ code, message }`) são convertidos no servidor para `problem+json`, em pt-BR ou en conforme `Accept-Language`. Por exemplo, e-mail já cadastrado vira 422 com `errors.email`.
+No Better Auth a senha fica na tabela `account` (linha com `provider_id = 'credential'`), e não na `user`. Por isso o seed insere nas duas.
 
-### Rate limiting
+### Sessão
 
-| Onde | Como | Limite |
-| --- | --- | --- |
-| `/api/auth/*` | Rate limit do Better Auth, persistido na tabela `rate_limit` | 100/min no geral, 5/min em `/sign-in/email`, 3/min em `/sign-up/email` |
-| `/api/items`, `/api/profile`, `/api/metrics` | Middleware próprio ([server/http/rate-limit.ts](server/http/rate-limit.ts)), janela fixa na tabela `api_rate_limit`, por usuário | 120/min, e 10/min no upload de avatar |
+A sessão é um cookie `httpOnly` do Better Auth, e o front não guarda token nenhum. Qualquer 401 da API desloga o usuário no front.
 
-As duas camadas gravam no Turso, então o limite vale entre instâncias. Ao estourar, a resposta é 429 em `problem+json` com `Retry-After` (e `RateLimit-*` nas rotas da aplicação). O IP vem da conexão; `x-forwarded-for` só é usado com `TRUST_PROXY=true`, para não deixar o limite ser burlado com header forjado.
+Os erros do Better Auth são convertidos para `problem+json`, no idioma do usuário. E-mail já cadastrado, por exemplo, volta como erro no campo de e-mail.
 
-### Pontos marcados para depois
+### Rate limit
 
-Procure por `ponytail:` no código: avatar em disco local (trocar por S3/R2 antes de rodar mais de uma instância) e limpeza oportunista da tabela de rate limit (trocar por job agendado ou Redis se o volume crescer).
+- **Login, cadastro e demais rotas de auth:** limite do próprio Better Auth. São 100 requisições por minuto no geral, 5 tentativas de login por minuto e 3 cadastros por minuto.
+- **Itens, perfil e métricas:** middleware próprio ([server/http/rate-limit.ts](server/http/rate-limit.ts)), por usuário. São 120 requisições por minuto, e 10 por minuto no upload de avatar.
 
-### Trocar para Supabase no futuro
+Os contadores ficam no banco, então valem mesmo com mais de uma instância da API. Passou do limite, a API responde 429 com `Retry-After`.
 
-Drizzle e Better Auth também suportam Postgres. A troca fica em `server/db` (schema com `pgTable`, `provider: 'pg'` no adapter e `dialect: 'postgresql'` no drizzle-kit). O SPA e o contrato em `src/contracts` não mudam.
+O IP vem da conexão. O header `x-forwarded-for` só é usado com `TRUST_PROXY=true`; sem isso, daria para burlar o limite mandando um IP falso.
 
-## Como adicionar uma feature
+### Pendências
 
-1. Schemas e tipos em `contracts/<recurso>.ts`, e rotas/funções em `core/api/<recurso>.ts`.
-2. Keys em `core/keys.ts` e `queryOptions` em `core/queries.ts`.
-3. Pasta `features/<nome>/` com `schemas.ts`, `hooks.ts` (mutations) e componentes. A feature recebe URL state por props.
-4. Rota fina em `routes/` com guard/loader/`validateSearch` compondo layout e feature.
-5. Handlers MSW em `mocks/handlers.ts`, rota da API em `server/routes/`, tabela em `server/db/schema.ts` + `npm run db:generate`, e testes em `__specs__/`.
+Os pontos marcados com `ponytail:` no código precisam de atenção antes de produção:
 
-## Desvios conscientes em relação ao pedido original
+- o avatar é salvo no disco do servidor (trocar por S3 ou R2);
+- a limpeza da tabela de rate limit é feita aos poucos, durante as requisições (trocar por um job agendado se o tráfego crescer).
 
-- **Lingui 5.9 em vez de 6**: o Lingui 6 exige Node ≥ 22.19, e a máquina de desenvolvimento roda 22.13. O macro roda via `@rolldown/plugin-babel`. Ao atualizar o Node, dá para migrar para o transform nativo do Lingui 6.
-- **TypeScript 6.0**: o typescript-eslint ainda não suporta o TS 7.
-- **Variantes com `class-variance-authority` e merge com `cn`**: é o padrão dos componentes do shadcn, então substituiu o `cva` beta + `tailwind-merge` e o antigo `ui/variants.ts`.
-- **Sem `motion`**: a única animação era a largura do sidebar, que agora vem do `Sidebar` do shadcn via CSS. Adicione o pacote de volta quando surgir uma animação que CSS não resolva.
-- **Sem `@testing-library/jest-dom`**: os matchers dele colidem com os tipos de `expect.element` do browser mode. `findBy*`/`getBy*` já falham quando o elemento não existe.
-- **Sem camada extra de componentes compartilhados** e sem `core/utils.ts`: nada genérico justificou a existência deles ainda.
+### Se um dia trocar para Supabase
+
+Drizzle e Better Auth também funcionam com Postgres. A troca fica toda em `server/db` (schema, adapter e config do drizzle-kit), sem mexer no front.
+
+## Decisões e limitações
+
+- **Lingui 5.9:** o 6 pede Node 22.19 ou mais novo. Dá para atualizar quando o Node for atualizado.
+- **TypeScript 6.0:** o typescript-eslint ainda não suporta o 7.
+- **Sem `@testing-library/jest-dom`:** ele conflita com os tipos dos testes de browser do Vitest. Os `findBy`/`getBy` já falham quando o elemento não existe.
+- **Não rode `npm audit fix --force`:** ele rebaixa o `eslint-plugin-boundaries` e o Lingui para versões que quebram o lint e a extração de textos.
