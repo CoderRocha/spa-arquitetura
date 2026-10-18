@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateProfile, uploadAvatar, type Profile } from '@core/api/profile'
+import type { Profile } from '@contracts/profile'
+import { updateProfile, uploadAvatar } from '@core/api/profile'
 import { profileQuery } from '@core/queries'
 
 const useSetProfile = () => {

@@ -1,5 +1,6 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query'
-import { fetchItem, fetchItems, type ItemListParams } from '@core/api/items'
+import type { ItemListParams } from '@contracts/items'
+import { fetchItem, fetchItems } from '@core/api/items'
 import { fetchMetrics } from '@core/api/metrics'
 import { fetchProfile } from '@core/api/profile'
 import { keys } from '@core/keys'

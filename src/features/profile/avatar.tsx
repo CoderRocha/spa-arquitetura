@@ -1,4 +1,4 @@
-import type { Profile } from '@core/api/profile'
+import type { Profile } from '@contracts/profile'
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar'
 
 const initialsOf = (name: string) =>

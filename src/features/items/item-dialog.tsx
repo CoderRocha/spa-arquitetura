@@ -1,6 +1,6 @@
 import { useLingui } from '@lingui/react/macro'
 import { toast } from 'sonner'
-import type { Item } from '@core/api/items'
+import type { Item } from '@contracts/items'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@ui/dialog'
 import { createFormSubmitHandler, schemaValidation, useAppForm } from '@pattern/form.hooks'
 import { useCreateItem, useUpdateItem } from '@features/items/hooks'

@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react/macro'
-import type { ItemStatus } from '@core/api/items'
+import type { ItemStatus } from '@contracts/items'
 import { Badge } from '@ui/badge'
 
 const variants = {

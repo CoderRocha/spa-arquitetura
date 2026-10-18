@@ -1,5 +1,6 @@
 import { t } from '@lingui/core/macro'
 import * as v from 'valibot'
+import { PASSWORD_MAX, PASSWORD_MIN } from '@contracts/auth'
 
 export const requiredText = (max = 120) =>
   v.pipe(
@@ -25,7 +26,8 @@ export const emailSchema = v.pipe(
 
 export const passwordSchema = v.pipe(
   v.string(),
-  v.minLength(8, () => t`A senha precisa ter pelo menos 8 caracteres.`),
+  v.minLength(PASSWORD_MIN, () => t`A senha precisa ter pelo menos 8 caracteres.`),
+  v.maxLength(PASSWORD_MAX, () => t`Use no máximo ${PASSWORD_MAX} caracteres.`),
 )
 
 export const safeRedirectSchema = v.fallback(v.optional(v.pipe(v.string(), v.regex(/^\/(?![/\\])/))), undefined)

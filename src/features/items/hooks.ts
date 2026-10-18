@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient, type QueryClient } from '@tanstack/react-query'
-import { createItem, deleteItem, updateItem, type ItemInput } from '@core/api/items'
+import type { ItemInput } from '@contracts/items'
+import { createItem, deleteItem, updateItem } from '@core/api/items'
 import { keys } from '@core/keys'
 import { itemDetailQuery } from '@core/queries'
 

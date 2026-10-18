@@ -1,5 +1,5 @@
 import { createQueryKeys, mergeQueryKeys } from '@lukemorales/query-key-factory'
-import type { ItemListParams } from '@core/api/items'
+import type { ItemListParams } from '@contracts/items'
 
 const items = createQueryKeys('items', {
   list: (params: ItemListParams) => [params],
