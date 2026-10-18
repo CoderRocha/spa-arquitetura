@@ -19,6 +19,7 @@
     "noEmit": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@contracts/*": ["./src/contracts/*"],
       "@core/*": ["./src/core/*"],
       "@ui": ["./src/ui"],
       "@ui/*": ["./src/ui/*"],
@@ -26,8 +27,9 @@
       "@features/*": ["./src/features/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@routes/*": ["./src/routes/*"],
-      "@mocks/*": ["./src/mocks/*"]
+      "@mocks/*": ["./src/mocks/*"],
+      "@server/*": ["./server/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "lingui.config.ts"]
+  "include": ["src", "vite.config.ts", "lingui.config.ts", "drizzle.config.ts"]
 }

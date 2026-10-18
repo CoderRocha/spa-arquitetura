@@ -7,16 +7,19 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 const layers = {
-  core: ['core', 'mocks'],
+  contracts: ['contracts'],
+  core: ['core', 'mocks', 'contracts'],
   ui: ['ui'],
   layouts: ['core', 'ui', 'layouts'],
   pattern: ['core', 'ui', 'pattern'],
-  features: ['core', 'ui', 'pattern', 'features'],
+  features: ['core', 'ui', 'pattern', 'features', 'contracts'],
   routes: ['core', 'ui', 'pattern', 'layouts', 'features'],
-  mocks: ['core', 'mocks', 'features'],
+  mocks: ['core', 'mocks', 'features', 'contracts'],
 }
 
-const allTypes = [...Object.keys(layers), 'app']
+const srcTypes = Object.keys(layers)
+
+const allTypes = [...srcTypes, 'app']
 
 export default defineConfig(
   globalIgnores(['dist', 'coverage', 'src/routeTree.gen.ts']),
@@ -29,12 +32,15 @@ export default defineConfig(
     },
     plugins: { boundaries },
     settings: {
-      'import/resolver': { typescript: { alwaysTryTypes: true, project: './tsconfig.json' } },
-      'boundaries/include': ['src/**/*'],
-      'boundaries/ignore': ['src/routeTree.gen.ts', 'src/**/__specs__/**'],
+      'import/resolver': {
+        typescript: { alwaysTryTypes: true, project: ['./tsconfig.json', './server/tsconfig.json'] },
+      },
+      'boundaries/include': ['src/**/*', 'server/**/*'],
+      'boundaries/ignore': ['src/routeTree.gen.ts', 'src/**/__specs__/**', 'server/**/__specs__/**'],
       'boundaries/elements': [
-        ...Object.keys(layers).map((type) => ({ type, pattern: `src/${type}`, partialMatch: false })),
+        ...srcTypes.map((type) => ({ type, pattern: `src/${type}`, partialMatch: false })),
         { type: 'app', pattern: 'src/*', partialMatch: false },
+        { type: 'server', pattern: 'server', partialMatch: false },
       ],
     },
     rules: {
@@ -50,6 +56,10 @@ export default defineConfig(
             {
               from: { element: { type: 'app' } },
               allow: { to: { element: { types: { anyOf: allTypes } } } },
+            },
+            {
+              from: { element: { type: 'server' } },
+              allow: { to: { element: { types: { anyOf: ['server', 'contracts'] } } } },
             },
           ],
         },
@@ -85,7 +95,7 @@ export default defineConfig(
     },
   },
   {
-    files: ['*.{js,ts}'],
+    files: ['*.{js,ts}', 'server/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
   ...oxlint.buildFromOxlintConfigFile('./.oxlintrc.json'),

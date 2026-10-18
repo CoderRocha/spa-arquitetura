@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => ({
     mode === 'stats' && visualizer({ filename: 'dist/stats.html', gzipSize: true, open: false }),
   ],
   resolve: { tsconfigPaths: true },
+  server: mode === 'mock' ? {} : { proxy: { '/api': 'http://localhost:8787' } },
   define: { __APP_VERSION__: JSON.stringify(pkg.version) },
   test: {
     projects: [
@@ -49,6 +50,15 @@ export default defineConfig(({ mode }) => ({
           environment: 'jsdom',
           setupFiles: specsSetup,
           testTimeout: 15_000,
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'server',
+          include: ['server/**/__specs__/*.spec.ts'],
+          environment: 'node',
+          testTimeout: 20_000,
         },
       },
       {
