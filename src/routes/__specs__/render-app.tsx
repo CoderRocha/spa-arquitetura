@@ -4,8 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory, RouterProvider } from '@tanstack/react-router'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { signIn } from '@core/api/auth'
-import { useSessionStore } from '@core/session-store'
+import { signInWithPassword } from '@core/auth'
 import { DEMO_EMAIL, DEMO_PASSWORD } from '@mocks/db'
 import { createQueryClient } from '@/query-client'
 import { createAppRouter } from '@/router'
@@ -24,5 +23,5 @@ export const renderApp = (path: string) => {
 }
 
 export const signInAsDemo = async () => {
-  useSessionStore.getState().setSession(await signIn({ email: DEMO_EMAIL, password: DEMO_PASSWORD }))
+  await signInWithPassword({ email: DEMO_EMAIL, password: DEMO_PASSWORD })
 }
