@@ -6,19 +6,26 @@ Blueprint de single page application com camadas explícitas, limites de depend�
 
 React 19, TypeScript estrito, Vite 8, TanStack Router (file-based, code splitting automático), TanStack Query, TanStack Form, TanStack Table 9 + Virtual, Zustand, Valibot, Tailwind CSS 4, shadcn/ui (estilo `base-nova`, sobre Base UI) com class-variance-authority, `cn`, lucide-react e Sonner, Lingui, MSW, Vitest (jsdom + browser mode com Playwright), ESLint com `eslint-plugin-boundaries` e oxlint.
 
+Backend: Hono + Drizzle sobre Turso (libSQL) e Better Auth, em `server/`.
+
 ## Scripts
 
 | Script | O que faz |
 | --- | --- |
-| `npm run dev` | Dev server contra a API real (`VITE_API_URL`, padrão `/api`) |
+| `npm run dev` | Dev server do SPA com proxy de `/api` para `http://localhost:8787` (rode junto com `dev:api`) |
+| `npm run dev:api` | API (Hono) em watch, lendo `.env` se existir |
 | `npm run dev:mock` | Dev server com MSW interceptando a API (login: `demo@example.com` / `password123`) |
-| `npm run build` | Build de produção + `tsc --noEmit` |
+| `npm run build` | Build de produção + `tsc` do SPA e do servidor |
 | `npm run build:stats` | Build com `dist/stats.html` (rollup-plugin-visualizer) |
 | `npm run lint` | `oxlint` e depois `eslint` (tipos + boundaries) |
-| `npm run typecheck` | `tsc --noEmit` |
+| `npm run typecheck` | `tsc` do SPA e do servidor |
+| `npm run db:generate` | Gera migração a partir de `server/db/*.ts` (drizzle-kit) |
+| `npm run db:migrate` | Aplica as migrações no banco de `TURSO_DATABASE_URL` |
+| `npm run db:seed` | Roda `server/db/sql/seed.sql` no banco de `TURSO_DATABASE_URL` |
+| `npm run auth:generate` | Regera `server/db/auth-schema.ts` a partir da config do Better Auth |
 | `npm run i18n:extract` | Extrai mensagens para `src/core/locales/*.po` |
 | `npm test` | Todos os projetos de teste |
-| `npm run test:unit` / `test:integration` / `test:browser` | Um projeto por vez |
+| `npm run test:unit` / `test:integration` / `test:browser` / `test:server` | Um projeto por vez |
 
 Antes do primeiro `test:browser`: `npx playwright install chromium`.
 
@@ -26,6 +33,7 @@ Antes do primeiro `test:browser`: `npx playwright install chromium`.
 
 ```text
 src/
+  contracts/ schemas Valibot puros (respostas, inputs, limites), compartilhados entre SPA e servidor
   core/      fundação técnica: cliente HTTP, APIs, query keys/options, stores, auth, i18n, schemas transversais
   ui/        design system: componentes shadcn/ui (base-nova, sobre Base UI), sem domínio e sem texto fixo
   pattern/   composições compartilhadas: infraestrutura de form, data grid, boundaries, diálogos de erro
@@ -34,6 +42,7 @@ src/
   routes/    rotas finas: guard, prefetch, URL state e composição
   mocks/     MSW (handlers, banco em memória, setup de testes)
   main.tsx, router.ts, query-client.ts   composição da aplicação
+server/      API Hono + Drizzle (Turso/libSQL) + Better Auth
 ```
 
 ### Matriz de dependências
@@ -42,14 +51,16 @@ Verificada por `boundaries/dependencies` em [eslint.config.js](eslint.config.js)
 
 | Camada | Pode importar de |
 | --- | --- |
-| `core` | `core`, `mocks` |
+| `contracts` | `contracts` |
+| `core` | `core`, `mocks`, `contracts` |
 | `ui` | `ui` |
 | `layouts` | `core`, `ui`, `layouts` |
 | `pattern` | `core`, `ui`, `pattern` |
-| `features` | `core`, `ui`, `pattern`, `features` |
+| `features` | `core`, `ui`, `pattern`, `features`, `contracts` |
 | `routes` | `core`, `ui`, `pattern`, `layouts`, `features` |
-| `mocks` | `core`, `mocks`, `features` |
+| `mocks` | `core`, `mocks`, `features`, `contracts` |
 | app (`src/*.ts[x]`) | tudo |
+| `server` | `server`, `contracts` |
 
 Pacotes externos não entram na matriz. Arquivos em `__specs__/` ficam fora dela porque testes compõem a aplicação inteira.
 
@@ -99,7 +110,7 @@ routes  loader/beforeLoad → queryClient.query(xQuery())
 features                → useQuery / useSuspenseQuery(xQuery()), useMutation + invalidação via keys
 ```
 
-O `httpResource` adiciona `Accept-Language` (locale da app store) e `Authorization`, renova o token antes de requests protegidas (uma única renovação para requests concorrentes), converte `application/problem+json` em `FriendlyError` com `fieldErrors`, normaliza falha de rede (status 0) e valida a resposta contra o schema do recurso. Resposta fora do contrato também vira `FriendlyError`.
+O `httpResource` adiciona `Accept-Language` (locale da app store), envia o cookie de sessão (`credentials: 'include'`), converte `application/problem+json` em `FriendlyError` com `fieldErrors`, normaliza falha de rede (status 0) e valida a resposta contra o schema do recurso. Resposta fora do contrato também vira `FriendlyError`.
 
 No TanStack Query 5.104, `prefetchQuery` e `ensureQueryData` estão depreciados. As rotas usam `queryClient.query(options)`, e `.catch(() => undefined)` quando o erro deve ficar com o boundary do widget.
 
@@ -145,16 +156,68 @@ Lingui com origem `pt-BR` e tradução `en` em `src/core/locales`. O locale vem 
 | `unit` | `src/{core,pattern,features}/**/__specs__` | jsdom + MSW node |
 | `integration` | `src/routes/__specs__` | jsdom + MSW node + router com memory history |
 | `browser` | `src/ui/__specs__` | Chromium headless via Playwright, com o CSS da aplicação |
+| `server` | `server/__specs__` | Node, libSQL em memória com a migração e o `seed.sql` reais |
 
 O banco do mock, as stores e o `localStorage` são resetados após cada teste ([src/mocks/setup-specs.ts](src/mocks/setup-specs.ts)).
 
+## Backend (Turso + Better Auth)
+
+O SPA fala com a API pelo mesmo contrato REST que o MSW simula (`problem+json` nos erros). Em desenvolvimento o Vite faz proxy de `/api` para a API, então tudo roda na mesma origem e o cookie de sessão funciona sem CORS.
+
+```text
+server/
+  env.ts               variáveis validadas com Valibot
+  auth.ts              Better Auth (e-mail/senha, campos bio/onboarded, rate limit)
+  app.ts               Hono: CORS, locale, IP do cliente, rotas
+  db/auth-schema.ts    tabelas do Better Auth (geradas por `npm run auth:generate`)
+  db/schema.ts         tabelas item e api_rate_limit
+  db/migrations/       SQL gerado pelo drizzle-kit
+  db/sql/seed.sql      usuário demo + 64 itens (os mesmos dados do mock)
+  http/                problem+json, sessão, rate limit, IP, mensagens pt-BR/en
+  routes/              items, profile (com upload de avatar), metrics
+```
+
+### Preparando o banco no Turso
+
+1. Crie o banco no painel do Turso e gere um token.
+2. Copie `.env.example` para `.env` e preencha `TURSO_DATABASE_URL` (`libsql://...`), `TURSO_AUTH_TOKEN` e `BETTER_AUTH_SECRET` (32+ caracteres, por exemplo `openssl rand -base64 32`).
+3. Crie as tabelas: cole [server/db/migrations/0000_init.sql](server/db/migrations/0000_init.sql) no SQL console do Turso, ou rode `npm run db:migrate`.
+4. Popule com dados de teste: cole [server/db/sql/seed.sql](server/db/sql/seed.sql) no console, ou rode `npm run db:seed`. O script pode ser rodado de novo sem duplicar nada.
+5. `npm run dev:api` em um terminal e `npm run dev` em outro. Login: `demo@example.com` / `password123`.
+
+Para desenvolver sem conta no Turso, deixe `TURSO_DATABASE_URL=file:local.db` e rode os passos 3 e 4 pelos scripts.
+
+O Better Auth guarda a senha na tabela `account`, numa linha com `provider_id = 'credential'`, e não em `user`. Por isso o seed insere as duas linhas. O hash do seed foi gerado com `hashPassword` de `better-auth/crypto`.
+
+### Sessão e erros
+
+- A sessão é um cookie `httpOnly` do Better Auth. O SPA não guarda token: a `session-store` só reflete o status (`authenticated`/`anonymous`), e qualquer 401 da API encerra a sessão no cliente.
+- Erros do Better Auth (`{ code, message }`) são convertidos no servidor para `problem+json`, em pt-BR ou en conforme `Accept-Language`. Por exemplo, e-mail já cadastrado vira 422 com `errors.email`.
+
+### Rate limiting
+
+| Onde | Como | Limite |
+| --- | --- | --- |
+| `/api/auth/*` | Rate limit do Better Auth, persistido na tabela `rate_limit` | 100/min no geral, 5/min em `/sign-in/email`, 3/min em `/sign-up/email` |
+| `/api/items`, `/api/profile`, `/api/metrics` | Middleware próprio ([server/http/rate-limit.ts](server/http/rate-limit.ts)), janela fixa na tabela `api_rate_limit`, por usuário | 120/min, e 10/min no upload de avatar |
+
+As duas camadas gravam no Turso, então o limite vale entre instâncias. Ao estourar, a resposta é 429 em `problem+json` com `Retry-After` (e `RateLimit-*` nas rotas da aplicação). O IP vem da conexão; `x-forwarded-for` só é usado com `TRUST_PROXY=true`, para não deixar o limite ser burlado com header forjado.
+
+### Pontos marcados para depois
+
+Procure por `ponytail:` no código: avatar em disco local (trocar por S3/R2 antes de rodar mais de uma instância) e limpeza oportunista da tabela de rate limit (trocar por job agendado ou Redis se o volume crescer).
+
+### Trocar para Supabase no futuro
+
+Drizzle e Better Auth também suportam Postgres. A troca fica em `server/db` (schema com `pgTable`, `provider: 'pg'` no adapter e `dialect: 'postgresql'` no drizzle-kit). O SPA e o contrato em `src/contracts` não mudam.
+
 ## Como adicionar uma feature
 
-1. Recurso de API em `core/api/<recurso>.ts` (schema, tipos, rotas, funções).
+1. Schemas e tipos em `contracts/<recurso>.ts`, e rotas/funções em `core/api/<recurso>.ts`.
 2. Keys em `core/keys.ts` e `queryOptions` em `core/queries.ts`.
 3. Pasta `features/<nome>/` com `schemas.ts`, `hooks.ts` (mutations) e componentes. A feature recebe URL state por props.
 4. Rota fina em `routes/` com guard/loader/`validateSearch` compondo layout e feature.
-5. Handlers MSW em `mocks/handlers.ts` e um teste em `__specs__/`.
+5. Handlers MSW em `mocks/handlers.ts`, rota da API em `server/routes/`, tabela em `server/db/schema.ts` + `npm run db:generate`, e testes em `__specs__/`.
 
 ## Desvios conscientes em relação ao pedido original
 
